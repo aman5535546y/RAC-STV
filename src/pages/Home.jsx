@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSiteContent } from '../context/SiteContentContext';
+import { useSiteContent, isMediaVideo } from '../context/SiteContentContext';
 import './Home.css';
 
 export default function Home() {
@@ -65,10 +65,10 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* 1. HERO SECTION (FULL-SCREEN 100VH, BOTTOM-LEFT CONTENT, BOTTOM-CENTER CAROUSEL DOTS) */}
+      {/* 1. HERO SECTION */}
       <section className="hero-section">
         
-        {/* Media Reel Backdrop Layer (2K Images & 1080p Full HD Videocover) */}
+        {/* Media Reel Backdrop Layer */}
         <div className="hero-media-backdrop">
           {mediaList.map((item, idx) => (
             <div 
@@ -98,7 +98,7 @@ export default function Home() {
           <div className="hero-media-overlay"></div>
         </div>
 
-        {/* Hero Content (Positioned Bottom-Left with 60-80px Padding) */}
+        {/* Hero Content */}
         <div className="container hero-content-container">
           <div className="hero-content">
             <h1 className="hero-title">
@@ -111,7 +111,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Modern Sliding Carousel Indicators (Clean Floating Dots with Gliding Active Indicator) */}
+        {/* Carousel Indicators */}
         {mediaList.length > 1 && (
           <div className="hero-carousel-indicators" aria-label="Hero slide navigation">
             {mediaList.map((_, idx) => (
@@ -123,7 +123,6 @@ export default function Home() {
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
-            {/* Sliding Active Indicator Dot */}
             <div 
               className="carousel-active-glider"
               style={{
@@ -157,7 +156,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. BOARD MEMBERS SECTION - INTERACTIVE 3D FLIP LEADER CARDS */}
+      {/* 3. BOARD MEMBERS SECTION */}
       <section id="board" className="board-section">
         <div className="container">
           <div className="section-header">
@@ -177,7 +176,6 @@ export default function Home() {
                   title="Click to turn card"
                 >
                   <div className="board-card-inner">
-                    {/* FRONT SIDE OF TAB (Full Card Photo Frame & Bottom Position / Name) */}
                     <div className="board-card-front">
                       <div className="board-card-photo-frame">
                         <img 
@@ -201,7 +199,6 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* BACK SIDE OF TAB (VISION & MESSAGE) */}
                     <div className="board-card-back">
                       <div className="card-back-header">
                         <span className="board-role">{member.role}</span>
@@ -250,51 +247,53 @@ export default function Home() {
             <p style={{ marginTop: '0.35rem' }}>Creating sustainable community change through action</p>
           </div>
 
-          {/* Featured Highlights Bento Grid (Filtered Featured Projects) */}
           <div className="bento-photos-grid">
             {sortedBentoProjects
               .filter(item => item.isFeatured !== false)
               .slice(0, 10)
-              .map((item) => (
-                <div 
-                  key={item.id} 
-                  className={`bento-card ${item.sizeClass || 'bento-short'}`}
-                  onClick={() => setSelectedProject(item)}
-                >
-                  <div className="bento-card-bg">
-                    {item.mediaType === 'video' && item.mediaUrl ? (
-                      <video 
-                        src={item.mediaUrl} 
-                        className="bento-card-media" 
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline 
-                      />
-                    ) : item.mediaUrl ? (
-                      <img 
-                        src={item.mediaUrl} 
-                        alt={item.title} 
-                        className="bento-card-media" 
-                        onError={(e) => { e.target.style.display = 'none'; }}
-                      />
-                    ) : (
-                      <div style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: 'radial-gradient(circle at center, rgba(212,19,103,0.3) 0%, rgba(10,10,12,0.9) 100%)'
-                      }}></div>
-                    )}
-                  </div>
-                  <div className="bento-card-gradient"></div>
-                  
-                  <div className="bento-card-body">
-                    <div className="bento-card-bottom">
-                      <h3 className="bento-title">{item.title}</h3>
+              .map((item) => {
+                const isVid = isMediaVideo(item);
+                return (
+                  <div 
+                    key={item.id} 
+                    className={`bento-card ${item.sizeClass || 'bento-short'}`}
+                    onClick={() => setSelectedProject(item)}
+                  >
+                    <div className="bento-card-bg">
+                      {isVid && item.mediaUrl ? (
+                        <video 
+                          src={item.mediaUrl} 
+                          className="bento-card-media" 
+                          autoPlay 
+                          loop 
+                          muted 
+                          playsInline 
+                        />
+                      ) : item.mediaUrl ? (
+                        <img 
+                          src={item.mediaUrl} 
+                          alt={item.title} 
+                          className="bento-card-media" 
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <div style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundImage: 'radial-gradient(circle at center, rgba(212,19,103,0.3) 0%, rgba(10,10,12,0.9) 100%)'
+                        }}></div>
+                      )}
+                    </div>
+                    <div className="bento-card-gradient"></div>
+                    
+                    <div className="bento-card-body">
+                      <div className="bento-card-bottom">
+                        <h3 className="bento-title">{item.title}</h3>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
 
           {/* Centered CTA button at bottom redirecting to /projects page */}

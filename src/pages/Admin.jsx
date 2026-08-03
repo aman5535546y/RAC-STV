@@ -306,18 +306,24 @@ export default function Admin() {
 
   const handleBentoMediaFileUpload = (id, file) => {
     if (!file) return;
+    const isVideo = file.type.startsWith('video/');
     const reader = new FileReader();
     reader.onload = (e) => {
-      updateBentoProject(id, { mediaUrl: e.target.result });
+      updateBentoProject(id, { 
+        mediaUrl: e.target.result,
+        mediaType: isVideo ? 'video' : 'image'
+      });
     };
     reader.readAsDataURL(file);
   };
 
   const handleNewBentoMediaFileUpload = (file) => {
     if (!file) return;
+    const isVideo = file.type.startsWith('video/');
     const reader = new FileReader();
     reader.onload = (e) => {
       setNewProjMediaUrl(e.target.result);
+      setNewProjMediaType(isVideo ? 'video' : 'image');
     };
     reader.readAsDataURL(file);
   };
@@ -1259,15 +1265,15 @@ export default function Admin() {
                           <label className="form-label">Card Media Type</label>
                           <select className="form-input" value={p.mediaType || 'image'} onChange={(e) => updateBentoProject(p.id, { mediaType: e.target.value })}>
                             <option value="image">Photo Image</option>
-                            <option value="video">3-Second Video Loop (MP4/WebM)</option>
+                            <option value="video">4-Second Video Loop (MP4/WebM)</option>
                           </select>
                         </div>
 
                         <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                          <label className="form-label">Project Photo / 3s Video Media (Upload File or Enter URL)</label>
+                          <label className="form-label">Project Media (Image or Video)</label>
                           <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-                            <div style={{ width: '70px', height: '50px', borderRadius: '6px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
-                              {p.mediaType === 'video' && p.mediaUrl ? (
+                            <div style={{ width: '85px', height: '60px', borderRadius: '6px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
+                              {(p.mediaType === 'video' || (p.mediaUrl && (p.mediaUrl.startsWith('data:video/') || p.mediaUrl.endsWith('.mp4') || p.mediaUrl.endsWith('.webm')))) ? (
                                 <video src={p.mediaUrl} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : p.mediaUrl ? (
                                 <img src={p.mediaUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -1282,21 +1288,28 @@ export default function Admin() {
                               <input 
                                 type="text" 
                                 className="form-input" 
-                                placeholder="e.g. /hero_team_1.jpg or https://..." 
+                                placeholder="Media URL (e.g. /hero_team_1.jpg, .mp4, or https://...)" 
                                 value={p.mediaUrl || ''} 
-                                onChange={(e) => updateBentoProject(p.id, { mediaUrl: e.target.value })} 
+                                onChange={(e) => {
+                                  const url = e.target.value;
+                                  const isVid = url.startsWith('data:video/') || url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.mov') || url.includes('/video/upload/');
+                                  updateBentoProject(p.id, { 
+                                    mediaUrl: url,
+                                    mediaType: isVid ? 'video' : (p.mediaType || 'image')
+                                  });
+                                }} 
                               />
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                                 <label className="btn btn-outline" style={{ padding: '0.35rem 0.85rem', fontSize: '0.75rem', cursor: 'pointer', background: 'var(--accent-soft)' }}>
-                                  <i className="ti ti-upload"></i> Upload {p.mediaType === 'video' ? '3s Video' : 'Photo'} File
+                                  <i className="ti ti-upload"></i> Upload Image or Video File
                                   <input 
                                     type="file" 
-                                    accept={p.mediaType === 'video' ? 'video/*' : 'image/*'} 
+                                    accept="image/*,video/mp4,video/webm,video/quicktime" 
                                     style={{ display: 'none' }} 
                                     onChange={(e) => handleBentoMediaFileUpload(p.id, e.target.files[0])} 
                                   />
                                 </label>
-                                <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Select photo or 3s video file from computer</span>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Select photo (JPG, PNG, WebP) or video (MP4, WebM) file</span>
                               </div>
                             </div>
                           </div>

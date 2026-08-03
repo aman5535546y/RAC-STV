@@ -4,6 +4,16 @@ const SiteContentContext = createContext(null);
 
 const STORAGE_KEY = 'rotaract_stv_site_content';
 
+export function isMediaVideo(item) {
+  if (!item) return false;
+  if (item.mediaType === 'video') return true;
+  const url = (typeof item === 'string' ? item : item.mediaUrl || item.videoUrl || item.url || item.photo || '').trim().toLowerCase();
+  if (url.startsWith('data:video/') || url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.mov') || url.includes('/video/upload/')) {
+    return true;
+  }
+  return false;
+}
+
 const defaultHeroMedia = [
   { id: 1, type: 'image', url: '/hero_team_1.jpg', title: 'Rotaract STV Team Unity' },
   { id: 2, type: 'image', url: '/hero_team_2.jpg', title: 'Executive Board Assembly' },
@@ -304,13 +314,17 @@ export function SiteContentProvider({ children }) {
           })) : defaultSiteContent.board;
 
           let currentBentoProjects = (parsed && parsed.bentoProjects && Array.isArray(parsed.bentoProjects))
-            ? parsed.bentoProjects.map((p, i) => ({
-                ...defaultSiteContent.bentoProjects[i],
-                ...p,
-                mediaType: p.mediaType || 'image',
-                mediaUrl: p.mediaUrl || (defaultSiteContent.bentoProjects[i] ? defaultSiteContent.bentoProjects[i].mediaUrl : '/hero_team_1.jpg'),
-                eventUrl: p.eventUrl || 'https://www.instagram.com/rotaractclubstv?igsh=NTl2ZTdxY2ViNzZ5'
-              }))
+            ? parsed.bentoProjects.map((p, i) => {
+                const targetUrl = p.mediaUrl || p.videoUrl || p.imageUrl || (defaultSiteContent.bentoProjects[i] ? defaultSiteContent.bentoProjects[i].mediaUrl : '/hero_team_1.jpg');
+                const detectedType = p.mediaType || (isMediaVideo(targetUrl) ? 'video' : 'image');
+                return {
+                  ...defaultSiteContent.bentoProjects[i],
+                  ...p,
+                  mediaType: detectedType,
+                  mediaUrl: targetUrl,
+                  eventUrl: p.eventUrl || 'https://www.instagram.com/rotaractclubstv?igsh=NTl2ZTdxY2ViNzZ5'
+                };
+              })
             : defaultSiteContent.bentoProjects;
 
           let currentPartnerClubs = (parsed && parsed.partnerClubs && Array.isArray(parsed.partnerClubs))
@@ -522,7 +536,7 @@ export function SiteContentProvider({ children }) {
       sizeClass: projObj.sizeClass || 'bento-short',
       volunteers: projObj.volunteers || '20 Members',
       impact: projObj.impact || 'Community Impact',
-      mediaType: projObj.mediaType || 'image',
+      mediaType: projObj.mediaType || (isMediaVideo(projObj.mediaUrl) ? 'video' : 'image'),
       mediaUrl: projObj.mediaUrl || '/hero_team_1.jpg',
       eventUrl: projObj.eventUrl || 'https://www.instagram.com/rotaractclubstv?igsh=NTl2ZTdxY2ViNzZ5'
     };

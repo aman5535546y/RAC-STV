@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSiteContent } from '../context/SiteContentContext';
+import { useSiteContent, isMediaVideo } from '../context/SiteContentContext';
 import './Home.css';
 
 export default function Projects() {
@@ -33,10 +33,8 @@ export default function Projects() {
     if (!dateStr) return { day: '15', monthYear: 'OCT 2025' };
     const tokens = dateStr.trim().split(/\s+/);
     if (tokens.length === 3) {
-      // e.g. "15 OCT 2025"
       return { day: tokens[0], monthYear: `${tokens[1]} ${tokens[2]}` };
     } else if (tokens.length === 2) {
-      // e.g. "OCT 2025" -> default day or month focus
       return { day: tokens[0].substring(0, 3), monthYear: tokens[1] };
     }
     return { day: '15', monthYear: dateStr };
@@ -67,7 +65,7 @@ export default function Projects() {
         {/* Controls Bar: View Mode & Sort Order Selector */}
         <div style={{ 
           display: 'flex', 
-          justify: 'space-between', 
+          justifyContent: 'space-between', 
           alignItems: 'center', 
           flexWrap: 'wrap', 
           gap: '1rem', 
@@ -124,11 +122,12 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* VIEW MODE 1: TIMELINE LIST FORMAT (PHOTO 2 REFERENCE) */}
+        {/* VIEW MODE 1: TIMELINE LIST FORMAT */}
         {viewMode === 'list' ? (
           <div className="project-list-container">
             {sortedProjects.map((item) => {
               const { day, monthYear } = parseDateCallout(item.date);
+              const isVid = isMediaVideo(item);
               return (
                 <div 
                   key={item.id} 
@@ -156,7 +155,7 @@ export default function Projects() {
 
                   {/* Right Column: Media Avatar / Thumbnail */}
                   <div className="project-list-thumb-col">
-                    {item.mediaType === 'video' && item.mediaUrl ? (
+                    {isVid && item.mediaUrl ? (
                       <video 
                         src={item.mediaUrl} 
                         className="project-list-thumb" 
@@ -185,51 +184,54 @@ export default function Projects() {
         ) : (
           /* VIEW MODE 2: BENTO GRID FORMAT */
           <div className="bento-photos-grid">
-            {sortedProjects.map((item) => (
-              <div 
-                key={item.id} 
-                className={`bento-card ${item.sizeClass || 'bento-short'}`}
-                onClick={() => setSelectedProject(item)}
-              >
-                <div className="bento-card-bg">
-                  {item.mediaType === 'video' && item.mediaUrl ? (
-                    <video 
-                      src={item.mediaUrl} 
-                      className="bento-card-media" 
-                      autoPlay 
-                      loop 
-                      muted 
-                      playsInline 
-                    />
-                  ) : item.mediaUrl ? (
-                    <img 
-                      src={item.mediaUrl} 
-                      alt={item.title} 
-                      className="bento-card-media" 
-                      onError={(e) => { e.target.style.display = 'none'; }}
-                    />
-                  ) : (
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#0A0A0C'
-                    }}></div>
-                  )}
-                </div>
-                <div className="bento-card-gradient"></div>
-                
-                <div className="bento-card-body">
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', zIndex: 4 }}>
-                    <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#FFF', background: 'rgba(0,0,0,0.65)', padding: '0.25rem 0.6rem', borderRadius: 'var(--radius-pill)' }}>
-                      <i className="ti ti-calendar"></i> {item.date}
-                    </span>
+            {sortedProjects.map((item) => {
+              const isVid = isMediaVideo(item);
+              return (
+                <div 
+                  key={item.id} 
+                  className={`bento-card ${item.sizeClass || 'bento-short'}`}
+                  onClick={() => setSelectedProject(item)}
+                >
+                  <div className="bento-card-bg">
+                    {isVid && item.mediaUrl ? (
+                      <video 
+                        src={item.mediaUrl} 
+                        className="bento-card-media" 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline 
+                      />
+                    ) : item.mediaUrl ? (
+                      <img 
+                        src={item.mediaUrl} 
+                        alt={item.title} 
+                        className="bento-card-media" 
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '100%',
+                        height: '100%',
+                        background: '#0A0A0C'
+                      }}></div>
+                    )}
                   </div>
-                  <div className="bento-card-bottom">
-                    <h3 className="bento-title">{item.title}</h3>
+                  <div className="bento-card-gradient"></div>
+                  
+                  <div className="bento-card-body">
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', zIndex: 4 }}>
+                      <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#FFF', background: 'rgba(0,0,0,0.65)', padding: '0.25rem 0.6rem', borderRadius: 'var(--radius-pill)' }}>
+                        <i className="ti ti-calendar"></i> {item.date}
+                      </span>
+                    </div>
+                    <div className="bento-card-bottom">
+                      <h3 className="bento-title">{item.title}</h3>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -244,7 +246,7 @@ export default function Projects() {
             </button>
 
             <div className="bento-modal-banner">
-              {selectedProject.mediaType === 'video' && selectedProject.mediaUrl ? (
+              {isMediaVideo(selectedProject) && selectedProject.mediaUrl ? (
                 <video 
                   src={selectedProject.mediaUrl} 
                   className="bento-modal-media" 

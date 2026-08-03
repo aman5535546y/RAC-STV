@@ -600,6 +600,26 @@ html[data-theme="light"] .carousel-active-glider {
   min-height: 125px;
 }
 
+/* Card Aspect Ratios: 9:16 Portrait for Large Desktop & 4:5 for Medium */
+.card-ratio-9-16,
+.bento-card.bento-tall,
+.bento-card.bento-extra-tall {
+  aspect-ratio: 9 / 16;
+}
+
+.card-ratio-4-5,
+.bento-card.bento-medium {
+  aspect-ratio: 4 / 5;
+}
+
+.bento-card-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
 /* Card Visual Header */
 .bento-card-bg {
   position: absolute;
@@ -609,6 +629,15 @@ html[data-theme="light"] .carousel-active-glider {
   opacity: 1;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 0;
+}
+
+.bento-card-bg video,
+.bento-card-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .bento-card-gradient {
