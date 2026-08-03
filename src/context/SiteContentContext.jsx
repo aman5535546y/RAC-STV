@@ -139,6 +139,22 @@ export const defaultSiteContent = {
       photo: '/hero_team_4.jpg',
       vision: 'Maintaining fiscal integrity, strategic budgeting, and sustainable resource allocation for all initiatives.',
       message: 'Financial transparency and prudent management ensure long-term community impact.'
+    },
+    { 
+      id: 'b9', 
+      role: 'COMMUNITY DIRECTOR', 
+      name: 'Vikram Singh', 
+      photo: '/hero_team_1.jpg',
+      vision: 'Driving grassroots community development, sustainability projects, and social welfare drives.',
+      message: 'Service to humanity is our greatest purpose and privilege.'
+    },
+    { 
+      id: 'b10', 
+      role: 'CLUB DIRECTOR', 
+      name: 'Ananya Roy', 
+      photo: '/hero_team_2.jpg',
+      vision: 'Enhancing club fellowship, international engagement, and member professional growth.',
+      message: 'Uniting passionate minds to create extraordinary leadership experiences.'
     }
   ],
   bentoProjects: [
