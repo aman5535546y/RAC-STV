@@ -264,28 +264,34 @@ html[data-theme="light"] .carousel-active-glider {
 
 .board-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 215px));
+  grid-template-columns: repeat(4, 1fr);
   justify-content: center;
-  gap: 20px;
-  margin-top: 1.25rem;
-  max-width: 960px;
+  gap: 24px;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 1720px;
   margin-left: auto;
   margin-right: auto;
 }
 
+@media (max-width: 1200px) {
+  .board-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
 @media (max-width: 980px) {
   .board-grid {
-    grid-template-columns: repeat(3, minmax(0, 220px));
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
-    max-width: 740px;
   }
 }
 
 @media (max-width: 640px) {
   .board-grid {
-    grid-template-columns: repeat(2, minmax(0, 175px));
-    gap: 12px;
-    max-width: 380px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
 }
 
@@ -563,36 +569,36 @@ html[data-theme="light"] .carousel-active-glider {
   text-transform: uppercase;
 }
 
-/* Clean Compact Bento Grid: 25-30% Card Size Reduction across 1680px Container */
+/* Responsive Projects & Activities Column Grid (Exactly 5 Columns on Desktop ≥1440px) */
 .bento-photos-grid {
-  column-count: 6;
-  column-gap: 16px;
+  column-count: 5;
+  column-gap: 18px;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 1500px) {
+@media (min-width: 1440px) {
   .bento-photos-grid {
     column-count: 5;
-    column-gap: 16px;
+    column-gap: 18px;
   }
 }
 
-@media (max-width: 1200px) {
+@media (min-width: 1024px) and (max-width: 1439px) {
   .bento-photos-grid {
     column-count: 4;
-    column-gap: 16px;
+    column-gap: 18px;
   }
 }
 
-@media (max-width: 900px) {
+@media (min-width: 640px) and (max-width: 1023px) {
   .bento-photos-grid {
     column-count: 3;
     column-gap: 16px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 639px) {
   .bento-photos-grid {
     column-count: 2;
     column-gap: 12px;
