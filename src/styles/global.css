@@ -1,0 +1,286 @@
+@import './variables.css';
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem; /* 15px-16px */
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Base Typography Scale (Reduced 10-15%) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+h1, .hero-title { 
+  font-size: clamp(2.4rem, 4.2vw, 3.5rem); /* 50px - 56px */
+  font-weight: 700; 
+  letter-spacing: -0.03em;
+}
+
+h2, .section-title { 
+  font-size: clamp(1.85rem, 3.2vw, 2.375rem); /* 34px - 38px */
+  font-weight: 600; 
+  letter-spacing: -0.02em;
+}
+
+h3, .subheading { 
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600; 
+}
+
+h4 { 
+  font-size: 0.95rem; /* 15px */
+  font-weight: 500; 
+}
+
+p {
+  color: var(--text-muted);
+  font-size: 0.95rem; /* 15px-16px */
+  line-height: 1.65;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem; /* 24px */
+  padding-right: 1.5rem; /* 24px */
+}
+
+/* Layout Main Content Shell */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px; /* Space for fixed navbar */
+}
+
+/* -------------------------------------------------------------
+   ULTRA-PREMIUM MINIMAL BUTTON SYSTEM (APPLE / VERCEL / LINEAR)
+   ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 14px; /* 14px exact */
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 10px 22px; /* Padding: 10px 22px */
+  min-height: 40px; /* Height: 40px - 44px */
+  height: 42px;
+  border-radius: var(--radius-pill); /* Pill shape: 999px */
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* DARK SECTION & DARK MODE BUTTONS */
+html[data-theme="dark"] .btn-primary,
+.btn-primary,
+.btn-dark {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .btn-primary:hover,
+.btn-primary:hover,
+.btn-dark:hover {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #FFFFFF !important;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* LIGHT SECTION & LIGHT MODE BUTTONS */
+html[data-theme="light"] .btn-primary,
+.btn-light {
+  background: transparent;
+  color: #09090B;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="light"] .btn-primary:hover,
+.btn-light:hover {
+  background: #09090B !important;
+  color: #FFFFFF !important;
+  border-color: #09090B !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* SUBTLE SECONDARY / OUTLINE BUTTONS */
+.btn-secondary,
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover,
+.btn-outline:hover {
+  border-color: var(--text-primary);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+/* ICON BUTTONS */
+.icon-btn-pill {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-btn-pill:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+  border-color: var(--text-primary);
+}
+
+/* Badges & Monospace Accents */
+.badge-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: var(--accent-soft);
+  border: 1px solid var(--border-subtle);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Section Header Utility with Generous Whitespace */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl); /* Generous whitespace */
+}
+
+.section-header .section-subtitle {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 13px; /* 13px */
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Card Shell */
+.card-shell {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: border-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.card-shell:hover {
+  border-color: var(--border-focus);
+  transform: translateY(-2px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* -------------------------------------------------------------
+   MOBILE RESPONSIVENESS & RESPONSIVE TYPOGRAPHY
+   ------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 70px;
+  }
+  .container {
+    padding-left: 20px; /* 20px - 24px left/right padding */
+    padding-right: 20px;
+  }
+  .btn {
+    min-height: 44px; /* Touch friendly minimum 44px */
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1, .hero-title { 
+    font-size: 2.2rem; /* 35px hero title scaling on mobile */
+  }
+  h2, .section-title { 
+    font-size: 1.65rem; /* 26px section title scaling */
+  }
+}
