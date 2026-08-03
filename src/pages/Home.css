@@ -554,53 +554,55 @@ html[data-theme="light"] .carousel-active-glider {
   text-transform: uppercase;
 }
 
-/* 5-column Bento Grid for Home Page Highlights (Fits 100vh on Desktop) */
+/* Clean 5-column Bento Grid for Home Page Highlights (Compact 10-15% scale, 0 Overlap) */
 .bento-photos-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 118px);
-  gap: 0.65rem;
+  column-count: 5;
+  column-gap: 0.65rem;
+  width: 100%;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .bento-photos-grid {
+    column-count: 4;
+    column-gap: 0.65rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .bento-photos-grid {
+    column-count: 3;
+    column-gap: 0.6rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .bento-photos-grid {
+    column-count: 2;
+    column-gap: 0.5rem;
+  }
 }
 
 /* Bento Card Base */
 .bento-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  display: block;
+  width: 100%;
+  margin-bottom: 0.65rem;
   background: #0A0A0C;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  height: 100%;
+  box-sizing: border-box;
 }
 
-/* Bento Heights & Spans matching reference wireframe */
-.bento-tall {
-  grid-row: span 3;
-  min-height: 185px;
-}
-
-.bento-extra-tall {
-  grid-row: span 3;
-  min-height: 185px;
-}
-
-.bento-medium {
-  grid-row: span 3;
-  min-height: 185px;
-}
-
-.bento-short {
-  grid-row: span 2;
-  min-height: 125px;
-}
-
-/* Card Aspect Ratios: 9:16 Portrait for Large Desktop & 4:5 for Medium */
+/* Card Aspect Ratios: 9:16 Portrait & 4:5 Standard */
 .card-ratio-9-16,
 .bento-card.bento-tall,
 .bento-card.bento-extra-tall {
@@ -608,7 +610,8 @@ html[data-theme="light"] .carousel-active-glider {
 }
 
 .card-ratio-4-5,
-.bento-card.bento-medium {
+.bento-card.bento-medium,
+.bento-card.bento-short {
   aspect-ratio: 4 / 5;
 }
 
