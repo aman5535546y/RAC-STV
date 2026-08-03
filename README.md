@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Rotaract Club of STV (Skill Tech Visionaries) Website
 
 A modern, responsive, dark-themed web application built for the **Rotaract Club of STV** featuring a public showcase home page, an interactive member portal & point leaderboard, and a password-protected admin roster controller.
@@ -75,3 +76,6 @@ Here are the planned features for the v2 production release:
 2. **Real Backend & Database Integration**: Connect to a cloud database (such as **Supabase** or **Firebase Firestore**) for real-time multi-device sync, secure row-level security (RLS), and persistent cloud storage.
 3. **Automated Event Attendance Marking**: Implement QR code check-ins at Rotaract events that automatically calculate and credit member points upon scanning.
 4. **Announcements Feed & Notifications**: Add a live club newsfeed, project updates bulletin, and push notifications for upcoming drives.
+=======
+# RAC-STV
+>>>>>>> 1eaa110224c2e80d8f1322a21e46877c296bc974
