@@ -184,12 +184,17 @@ export default function Projects() {
         ) : (
           /* VIEW MODE 2: BENTO GRID FORMAT */
           <div className="bento-photos-grid">
-            {sortedProjects.map((item) => {
+            {sortedProjects.map((item, idx) => {
               const isVid = isMediaVideo(item);
+              const sizePattern = ['bento-large', 'bento-medium', 'bento-small', 'bento-large', 'bento-medium', 'bento-small'];
+              const cardSize = (item.sizeClass && ['bento-large', 'bento-medium', 'bento-small'].includes(item.sizeClass))
+                ? item.sizeClass
+                : sizePattern[idx % sizePattern.length];
+
               return (
                 <div 
                   key={item.id} 
-                  className={`bento-card ${item.sizeClass || 'bento-short'}`}
+                  className={`bento-card ${cardSize}`}
                   onClick={() => setSelectedProject(item)}
                 >
                   <div className="bento-card-bg">
@@ -221,12 +226,14 @@ export default function Projects() {
                   
                   <div className="bento-card-body">
                     <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', zIndex: 4 }}>
-                      <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#FFF', background: 'rgba(0,0,0,0.65)', padding: '0.25rem 0.6rem', borderRadius: 'var(--radius-pill)' }}>
+                      <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: '#FFF', background: 'rgba(0,0,0,0.65)', padding: '0.2rem 0.5rem', borderRadius: 'var(--radius-pill)' }}>
                         <i className="ti ti-calendar"></i> {item.date}
                       </span>
                     </div>
                     <div className="bento-card-bottom">
-                      <h3 className="bento-title">{item.title}</h3>
+                      <h3 className="bento-title" style={{ fontSize: cardSize === 'bento-small' ? '0.78rem' : '0.92rem' }}>
+                        {item.title}
+                      </h3>
                     </div>
                   </div>
                 </div>

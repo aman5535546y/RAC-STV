@@ -517,7 +517,7 @@ html[data-theme="light"] .carousel-active-glider {
 }
 
 /* ========================================================= */
-/* WIREFRAME BENTO GRID PHOTOS & PROJECTS SECTION (100vh Fit) */
+/* WIREFRAME BENTO GRID PHOTOS & PROJECTS SECTION (1600-1700px Container Width) */
 /* ========================================================= */
 .projects-section {
   padding: 1.75rem 0 1.5rem;
@@ -525,6 +525,15 @@ html[data-theme="light"] .carousel-active-glider {
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   position: relative;
+}
+
+/* Wide Container for Projects (90% Viewport Width / Max-Width 1680px) */
+.projects-section .container,
+.projects-page .container {
+  width: 90% !important;
+  max-width: 1680px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .projects-section .section-header {
@@ -554,43 +563,50 @@ html[data-theme="light"] .carousel-active-glider {
   text-transform: uppercase;
 }
 
-/* Clean 5-column Bento Grid for Home Page Highlights (Compact 10-15% scale, 0 Overlap) */
+/* Clean Compact Bento Grid: 25-30% Card Size Reduction across 1680px Container */
 .bento-photos-grid {
-  column-count: 5;
-  column-gap: 0.65rem;
+  column-count: 6;
+  column-gap: 16px;
   width: 100%;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 1500px) {
+  .bento-photos-grid {
+    column-count: 5;
+    column-gap: 16px;
+  }
 }
 
 @media (max-width: 1200px) {
   .bento-photos-grid {
     column-count: 4;
-    column-gap: 0.65rem;
+    column-gap: 16px;
   }
 }
 
 @media (max-width: 900px) {
   .bento-photos-grid {
     column-count: 3;
-    column-gap: 0.6rem;
+    column-gap: 16px;
   }
 }
 
 @media (max-width: 600px) {
   .bento-photos-grid {
     column-count: 2;
-    column-gap: 0.5rem;
+    column-gap: 12px;
   }
 }
 
-/* Bento Card Base */
+/* Bento Card Base (16px Vertical Gap, 20px Radius) */
 .bento-card {
   break-inside: avoid;
   page-break-inside: avoid;
   -webkit-column-break-inside: avoid;
   display: block;
   width: 100%;
-  margin-bottom: 0.65rem;
+  margin-bottom: 16px;
   background: #0A0A0C;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -602,17 +618,23 @@ html[data-theme="light"] .carousel-active-glider {
   box-sizing: border-box;
 }
 
-/* Card Aspect Ratios: 9:16 Portrait & 4:5 Standard */
+/* Card Aspect Ratios: 1. Large (9:16), 2. Medium (4:5), 3. Small (3:2) */
 .card-ratio-9-16,
+.bento-card.bento-large,
 .bento-card.bento-tall,
 .bento-card.bento-extra-tall {
   aspect-ratio: 9 / 16;
 }
 
 .card-ratio-4-5,
-.bento-card.bento-medium,
-.bento-card.bento-short {
+.bento-card.bento-medium {
   aspect-ratio: 4 / 5;
+}
+
+.card-ratio-3-2,
+.bento-card.bento-small,
+.bento-card.bento-short {
+  aspect-ratio: 3 / 2;
 }
 
 .bento-card-media {

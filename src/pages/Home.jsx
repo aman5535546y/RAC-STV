@@ -250,13 +250,19 @@ export default function Home() {
           <div className="bento-photos-grid">
             {sortedBentoProjects
               .filter(item => item.isFeatured !== false)
-              .slice(0, 10)
-              .map((item) => {
+              .slice(0, 12)
+              .map((item, idx) => {
                 const isVid = isMediaVideo(item);
+                // Clean 3-Size Pattern: Large (9:16), Medium (4:5), Small (3:2)
+                const sizePattern = ['bento-large', 'bento-medium', 'bento-small', 'bento-large', 'bento-medium', 'bento-small'];
+                const cardSize = (item.sizeClass && ['bento-large', 'bento-medium', 'bento-small'].includes(item.sizeClass))
+                  ? item.sizeClass
+                  : sizePattern[idx % sizePattern.length];
+
                 return (
                   <div 
                     key={item.id} 
-                    className={`bento-card ${item.sizeClass || 'bento-short'}`}
+                    className={`bento-card ${cardSize}`}
                     onClick={() => setSelectedProject(item)}
                   >
                     <div className="bento-card-bg">
@@ -288,7 +294,9 @@ export default function Home() {
                     
                     <div className="bento-card-body">
                       <div className="bento-card-bottom">
-                        <h3 className="bento-title">{item.title}</h3>
+                        <h3 className="bento-title" style={{ fontSize: cardSize === 'bento-small' ? '0.78rem' : '0.92rem' }}>
+                          {item.title}
+                        </h3>
                       </div>
                     </div>
                   </div>
