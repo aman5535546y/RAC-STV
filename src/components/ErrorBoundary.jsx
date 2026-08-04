@@ -40,7 +40,7 @@ export class ErrorBoundary extends React.Component {
         }}>
           <div style={{
             fontSize: '3rem',
-            color: '#EC4899',
+            color: 'var(--accent-primary, #5A0F2D)',
             marginBottom: '1rem'
           }}>
             <i className="ti ti-alert-triangle"></i>
@@ -70,7 +70,7 @@ export class ErrorBoundary extends React.Component {
             type="button"
             className="btn btn-primary"
             onClick={this.handleReset}
-            style={{ background: '#d32b69', borderColor: '#d32b69', padding: '0.65rem 1.4rem' }}
+            style={{ background: 'var(--accent-primary, #5A0F2D)', borderColor: 'var(--accent-primary, #5A0F2D)', padding: '0.65rem 1.4rem' }}
           >
             <i className="ti ti-refresh"></i> Reload Admin Dashboard
           </button>

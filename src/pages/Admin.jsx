@@ -686,10 +686,10 @@ export default function Admin() {
                 <div className="roster-card">
                   <div className="card-title-bar">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <i className="ti ti-shield-check" style={{ color: '#d32b69', fontSize: '1.5rem' }}></i>
+                      <i className="ti ti-shield-check" style={{ color: 'var(--accent-primary)', fontSize: '1.5rem' }}></i>
                       <h3 style={{ margin: 0 }}>AUTHORIZED MEMBER ACCESS & CREDENTIALS CMS</h3>
                     </div>
-                    <span className="badge-mono" style={{ background: 'rgba(211, 43, 105, 0.15)', color: '#d32b69', borderColor: '#d32b69' }}>
+                    <span className="badge-mono" style={{ background: 'var(--accent-soft)', color: 'var(--accent-primary)', borderColor: 'var(--accent-primary)' }}>
                       <i className="ti ti-lock"></i> ADMIN CONTROLLED
                     </span>
                   </div>
@@ -739,7 +739,7 @@ export default function Admin() {
                               <td><span className="badge-mono" style={{ fontSize: '0.7rem' }}>{member.role}</span></td>
                               <td>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                  <span style={{ fontSize: '0.82rem', fontWeight: '700', fontFamily: 'var(--font-heading)', color: '#EC4899' }}>
+                                  <span style={{ fontSize: '0.82rem', fontWeight: '700', fontFamily: 'var(--font-heading)', color: 'var(--accent-primary)' }}>
                                     {attended} / {total} ({rate}%)
                                   </span>
                                   <div className="action-btn-group" style={{ marginLeft: '0.2rem' }}>
@@ -818,7 +818,7 @@ export default function Admin() {
                   <div className="add-member-card">
                   <div className="card-title-bar">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <i className="ti ti-user-plus" style={{ color: '#d32b69', fontSize: '1.5rem' }}></i>
+                      <i className="ti ti-user-plus" style={{ color: 'var(--accent-primary)', fontSize: '1.5rem' }}></i>
                       <h3 style={{ margin: 0 }}>AUTHORIZE & ONBOARD NEW CLUB MEMBER</h3>
                     </div>
                   </div>
@@ -852,7 +852,7 @@ export default function Admin() {
                     </div>
                     
                     <div style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
-                      <button type="submit" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', background: '#d32b69', borderColor: '#d32b69' }}>
+                      <button type="submit" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem' }}>
                         <i className="ti ti-shield-check"></i> Authorize & Add To Roster
                       </button>
                     </div>
