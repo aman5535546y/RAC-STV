@@ -56,6 +56,7 @@ export default function Admin() {
   const [newRole, setNewRole] = useState('');
   const [newPoints, setNewPoints] = useState('');
   const [newRegNo, setNewRegNo] = useState('');
+  const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberPassword, setNewMemberPassword] = useState('password123');
 
   // Accordion Expand/Collapse state for CMS items

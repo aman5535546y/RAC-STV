@@ -370,8 +370,8 @@ html[data-theme="light"] .carousel-active-glider {
 
 .board-card-container:hover .board-card-front,
 .board-card-container:hover .board-card-back {
-  border-color: rgba(211, 43, 105, 0.45);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(211, 43, 105, 0.2);
+  border-color: rgba(90, 15, 45, 0.65);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(90, 15, 45, 0.35);
 }
 
 /* Front Side Layout (4:5 Image, Glass Bottom Badge, Compact Typography) */
@@ -428,7 +428,7 @@ html[data-theme="light"] .carousel-active-glider {
   color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  background: linear-gradient(135deg, rgba(211, 43, 105, 0.35) 0%, rgba(18, 18, 24, 0.88) 100%);
+  background: linear-gradient(135deg, rgba(90, 15, 45, 0.45) 0%, rgba(18, 18, 24, 0.88) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -441,9 +441,9 @@ html[data-theme="light"] .carousel-active-glider {
 }
 
 .board-card-container:hover .board-role {
-  border-color: rgba(211, 43, 105, 0.55);
-  background: linear-gradient(135deg, rgba(211, 43, 105, 0.5) 0%, rgba(25, 20, 30, 0.9) 100%);
-  box-shadow: 0 4px 16px rgba(211, 43, 105, 0.35);
+  border-color: rgba(90, 15, 45, 0.75);
+  background: linear-gradient(135deg, rgba(90, 15, 45, 0.65) 0%, rgba(25, 20, 30, 0.9) 100%);
+  box-shadow: 0 4px 16px rgba(90, 15, 45, 0.4);
 }
 
 .board-name {
@@ -595,7 +595,7 @@ html[data-theme="light"] .carousel-active-glider {
 /* Header badge pill with accent ring */
 .photos-pill-badge {
   border: 1px solid var(--accent-primary);
-  box-shadow: 0 0 10px rgba(212, 19, 103, 0.25);
+  box-shadow: 0 0 10px rgba(90, 15, 45, 0.3);
   padding: 0.15rem 0.75rem;
   border-radius: var(--radius-pill);
   background: var(--accent-soft);

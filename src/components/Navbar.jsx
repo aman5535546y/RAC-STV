@@ -231,7 +231,7 @@ export default function Navbar() {
                       <button
                         type="button"
                         className="nav-profile-btn"
-                        style={{ borderColor: isMgr ? '#3B82F6' : '#FF2E93', color: isMgr ? '#60A5FA' : '#FF2E93' }}
+                        style={{ borderColor: isMgr ? '#3B82F6' : 'var(--accent-primary)', color: isMgr ? '#60A5FA' : 'var(--accent-primary)' }}
                         onClick={() => setShowDropdown(!showDropdown)}
                       >
                         {isMgr ? '💼 Manager ▼' : '👑 Admin ▼'}
@@ -243,8 +243,8 @@ export default function Navbar() {
                             <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.92rem' }}>
                               {authenticatedAdmin?.name || 'User'}
                             </div>
-                            <div style={{ fontSize: '0.72rem', color: isMgr ? '#60A5FA' : '#FF2E93', fontFamily: 'var(--font-mono)', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                              <span style={{ padding: '1px 5px', borderRadius: '3px', background: isMgr ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255, 46, 147, 0.2)' }}>
+                            <div style={{ fontSize: '0.72rem', color: isMgr ? '#60A5FA' : 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                              <span style={{ padding: '1px 5px', borderRadius: '3px', background: isMgr ? 'rgba(59, 130, 246, 0.2)' : 'rgba(90, 15, 45, 0.3)' }}>
                                 {isMgr ? 'MANAGER' : 'ADMIN'}
                               </span>
                               <span>• {authenticatedAdmin?.role}</span>
