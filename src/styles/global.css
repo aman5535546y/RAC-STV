@@ -31,40 +31,51 @@ body {
   flex-direction: column;
 }
 
-/* Base Typography Scale (Reduced 10-15%) */
+/* Base Typography Scale - Luxury Architectural & Editorial */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.06em;
   color: var(--text-primary);
   line-height: 1.15;
+  text-transform: uppercase;
 }
 
 h1, .hero-title { 
-  font-size: clamp(2.4rem, 4.2vw, 3.5rem); /* 50px - 56px */
-  font-weight: 700; 
-  letter-spacing: -0.03em;
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 600; 
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 h2, .section-title { 
-  font-size: clamp(1.85rem, 3.2vw, 2.375rem); /* 34px - 38px */
-  font-weight: 600; 
-  letter-spacing: -0.02em;
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  font-weight: 500; 
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 h3, .subheading { 
-  font-size: 1.125rem; /* 18px */
-  font-weight: 600; 
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 400; 
+  font-style: italic;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
 h4 { 
-  font-size: 0.95rem; /* 15px */
-  font-weight: 500; 
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
 }
 
 p {
   color: var(--text-muted);
-  font-size: 0.95rem; /* 15px-16px */
-  line-height: 1.65;
+  font-size: 0.95rem;
+  line-height: 1.7;
 }
 
 a {

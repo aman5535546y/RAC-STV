@@ -24,8 +24,9 @@
   --border-focus: rgba(90, 15, 45, 0.6);
   --border-glow: 0 0 16px rgba(90, 15, 45, 0.35);
   
-  /* Typography Scale */
-  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Typography Scale - Luxury Editorial & Architectural Aesthetics */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-heading: 'Cinzel', 'Cormorant Garamond', 'Space Grotesk', serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
   
