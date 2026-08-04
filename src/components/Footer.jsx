@@ -50,7 +50,7 @@ export default function Footer() {
           <div className="footer-brand">
             <div className="footer-title">
               <img 
-                src="/assets/output-onlinepngtools(2).png" 
+                src="/rotary_official_wheel.png" 
                 alt="Rotary International Wheel" 
                 className="nav-logo" 
                 draggable="false"

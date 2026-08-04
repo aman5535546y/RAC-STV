@@ -83,7 +83,7 @@ export default function Navbar() {
         <div className="container navbar-container">
           <NavLink to="/" className="navbar-brand" onClick={closeMenu}>
             <img
-              src="/assets/output-onlinepngtools(2).png"
+              src="/rotary_official_wheel.png"
               alt="Rotary International Wheel"
               className="nav-logo"
               draggable="false"
