@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSiteContent } from '../context/SiteContentContext';
 import { useMembers } from '../context/MembersContext';
-import RotaryWheelIcon from './RotaryWheelIcon';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -95,27 +94,13 @@ export default function Navbar() {
             </div>
           </NavLink>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Public Dark / Light Theme Mode Switcher Button */}
-            <button 
-              type="button"
-              className="theme-mode-toggle" 
-              onClick={toggleThemeMode}
-              aria-label="Toggle Dark and Light Mode"
-              title={isLight ? "Switch to Dark Theme" : "Switch to Light Theme"}
-            >
-              <i className={`ti ${isLight ? 'ti-moon-stars' : 'ti-sun'}`}></i>
-              <span className="theme-toggle-label">{isLight ? 'Dark' : 'Light'}</span>
-            </button>
-
-            <button 
-              className="mobile-toggle" 
-              onClick={toggleMenu} 
-              aria-label="Toggle Navigation Menu"
-            >
-              <i className={mobileOpen ? "ti ti-x" : "ti ti-menu-2"}></i>
-            </button>
-          </div>
+          <button 
+            className="mobile-toggle" 
+            onClick={toggleMenu} 
+            aria-label="Toggle Navigation Menu"
+          >
+            <i className={mobileOpen ? "ti ti-x" : "ti ti-menu-2"}></i>
+          </button>
 
           <nav>
             <ul className={`nav-links ${mobileOpen ? 'open' : ''}`}>
@@ -131,6 +116,29 @@ export default function Navbar() {
                 </NavLink>
               </li>
 
+              {/* ABOUT LINK */}
+              <li>
+                <a 
+                  href="#about" 
+                  className="nav-link"
+                  onClick={(e) => {
+                    closeMenu();
+                    if (window.location.pathname !== '/') {
+                      navigate('/');
+                      setTimeout(() => {
+                        const el = document.getElementById('about');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }, 200);
+                    } else {
+                      const el = document.getElementById('about');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  About
+                </a>
+              </li>
+
               {/* PROJECTS LINK */}
               <li>
                 <NavLink 
@@ -140,6 +148,20 @@ export default function Navbar() {
                 >
                   Projects
                 </NavLink>
+              </li>
+
+              {/* THEME TOGGLE (PLACED IMMEDIATELY BEFORE LOGIN/PROFILE) */}
+              <li>
+                <button 
+                  type="button"
+                  className="theme-mode-toggle" 
+                  onClick={toggleThemeMode}
+                  aria-label="Toggle Dark and Light Mode"
+                  title={isLight ? "Switch to Dark Theme" : "Switch to Light Theme"}
+                >
+                  <i className={`ti ${isLight ? 'ti-moon-stars' : 'ti-sun'}`}></i>
+                  <span className="theme-toggle-label">{isLight ? 'Dark' : 'Light'}</span>
+                </button>
               </li>
 
               {/* THIRD ITEM: LOGIN / MEMBER PROFILE DROPDOWN / ADMIN PROFILE DROPDOWN */}

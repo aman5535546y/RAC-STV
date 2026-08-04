@@ -8,8 +8,6 @@ import './Admin.css';
 const AUTHORIZED_ADMINS = [
   { id: 'a1', name: 'Aman Yadav', role: 'PRESIDENT', userRole: 'admin', passcode: 'aman2026', icon: 'ti-crown' },
   { id: 'a2', name: 'Falgun Bodele', role: 'PRESIDENT ELECT', userRole: 'admin', passcode: 'falgun2026', icon: 'ti-star' },
-  { id: 'a3', name: 'Vishatan', role: 'OVERALL MANAGER', userRole: 'manager', passcode: 'vishatan2026', icon: 'ti-briefcase' },
-  { id: 'a4', name: 'Adwait', role: 'TECHNICAL HEAD', userRole: 'manager', passcode: 'adwait2026', icon: 'ti-code' },
 ];
 
 const MASTER_PASSCODE = 'stv2026';
@@ -58,8 +56,13 @@ export default function Admin() {
   const [newRole, setNewRole] = useState('');
   const [newPoints, setNewPoints] = useState('');
   const [newRegNo, setNewRegNo] = useState('');
-  const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberPassword, setNewMemberPassword] = useState('password123');
+
+  // Accordion Expand/Collapse state for CMS items
+  const [expandedBentoIds, setExpandedBentoIds] = useState({});
+  const [expandedHeroIds, setExpandedHeroIds] = useState({});
+  const [expandedBoardIds, setExpandedBoardIds] = useState({});
+  const [expandedEventIds, setExpandedEventIds] = useState({});
   const [adminMemberError, setAdminMemberError] = useState('');
   const [editingMember, setEditingMember] = useState(null);
   const location = useLocation();
@@ -1235,115 +1238,197 @@ export default function Admin() {
                     </div>
                   </div>
 
-                  {content.bentoProjects.map((p) => (
-                    <div key={p.id} className="cms-item-card" style={{ marginBottom: '1.25rem' }}>
-                      <div className="cms-form-grid">
-                        <div className="form-group">
-                          <label className="form-label">Project Title</label>
-                          <input type="text" className="form-input" value={p.title} onChange={(e) => updateBentoProject(p.id, { title: e.target.value })} />
-                        </div>
-                        <div className="form-group">
-                          <label className="form-label">Tag Category</label>
-                          <input type="text" className="form-input" value={p.tag} onChange={(e) => updateBentoProject(p.id, { tag: e.target.value.toUpperCase() })} />
-                        </div>
-                        <div className="form-group">
-                          <label className="form-label">Wireframe Size Class</label>
-                          <select className="form-input" value={p.sizeClass || 'bento-short'} onChange={(e) => updateBentoProject(p.id, { sizeClass: e.target.value })}>
-                            <option value="bento-tall">bento-tall (Tall height ~340px)</option>
-                            <option value="bento-short">bento-short (Short height ~180px)</option>
-                            <option value="bento-medium">bento-medium (Medium height ~320px)</option>
-                            <option value="bento-extra-tall">bento-extra-tall (Extra-Tall height ~420px)</option>
-                          </select>
-                        </div>
-                        <div className="form-group">
-                          <label className="form-label">Tabler Icon Class</label>
-                          <input type="text" className="form-input" value={p.icon || 'ti-flame'} onChange={(e) => updateBentoProject(p.id, { icon: e.target.value })} />
-                        </div>
+                  {/* Global Expand / Collapse Control for Bento Items */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+                    <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                      TOTAL PROJECTS: {content.bentoProjects.length}
+                    </span>
+                    <button 
+                      type="button" 
+                      className="btn-xs btn-outline"
+                      style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem' }}
+                      onClick={() => {
+                        const allExpanded = Object.keys(expandedBentoIds).length === content.bentoProjects.length;
+                        if (allExpanded) {
+                          setExpandedBentoIds({});
+                        } else {
+                          const newMap = {};
+                          content.bentoProjects.forEach(p => newMap[p.id] = true);
+                          setExpandedBentoIds(newMap);
+                        }
+                      }}
+                    >
+                      {Object.keys(expandedBentoIds).length === content.bentoProjects.length ? 'Collapse All' : 'Expand All'}
+                    </button>
+                  </div>
 
-                        {/* Media Type & Upload Section */}
-                        <div className="form-group">
-                          <label className="form-label">Card Media Type</label>
-                          <select className="form-input" value={p.mediaType || 'image'} onChange={(e) => updateBentoProject(p.id, { mediaType: e.target.value })}>
-                            <option value="image">Photo Image</option>
-                            <option value="video">4-Second Video Loop (MP4/WebM)</option>
-                          </select>
-                        </div>
+                  {content.bentoProjects.map((p, idx) => {
+                    const isExpanded = !!expandedBentoIds[p.id];
+                    const isVid = p.mediaType === 'video' || (p.mediaUrl && (p.mediaUrl.startsWith('data:video/') || p.mediaUrl.endsWith('.mp4') || p.mediaUrl.endsWith('.webm')));
 
-                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                          <label className="form-label">Project Media (Image or Video)</label>
-                          <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-                            <div style={{ width: '85px', height: '60px', borderRadius: '6px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
-                              {(p.mediaType === 'video' || (p.mediaUrl && (p.mediaUrl.startsWith('data:video/') || p.mediaUrl.endsWith('.mp4') || p.mediaUrl.endsWith('.webm')))) ? (
+                    return (
+                      <div key={p.id} className="cms-item-card" style={{ marginBottom: '0.75rem', padding: '0.75rem 0.9rem' }}>
+                        {/* SLEEK COMPACT HEADER WITH SEQUENTIAL NUMBER BADGE & EXPAND TOGGLE */}
+                        <div 
+                          className="cms-item-header"
+                          onClick={() => setExpandedBentoIds(prev => ({ ...prev, [p.id]: !prev[p.id] }))}
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', cursor: 'pointer', userSelect: 'none' }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, minWidth: 0 }}>
+                            {/* Sequential Number Badge */}
+                            <span className="cms-seq-badge">
+                              #{idx + 1}
+                            </span>
+
+                            {/* Mini Media Preview */}
+                            <div style={{ width: '42px', height: '30px', borderRadius: '4px', overflow: 'hidden', background: '#000', flexShrink: 0, border: '1px solid var(--border-subtle)' }}>
+                              {isVid ? (
                                 <video src={p.mediaUrl} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : p.mediaUrl ? (
-                                <img src={p.mediaUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={p.mediaUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : (
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--accent-primary)' }}>
-                                  <i className="ti ti-photo"></i>
-                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: '0.75rem', color: 'var(--text-muted)' }}>📷</div>
                               )}
                             </div>
 
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                              <input 
-                                type="text" 
-                                className="form-input" 
-                                placeholder="Media URL (e.g. /hero_team_1.jpg, .mp4, or https://...)" 
-                                value={p.mediaUrl || ''} 
-                                onChange={(e) => {
-                                  const url = e.target.value;
-                                  const isVid = url.startsWith('data:video/') || url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.mov') || url.includes('/video/upload/');
-                                  updateBentoProject(p.id, { 
-                                    mediaUrl: url,
-                                    mediaType: isVid ? 'video' : (p.mediaType || 'image')
-                                  });
-                                }} 
-                              />
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                                <label className="btn btn-outline" style={{ padding: '0.35rem 0.85rem', fontSize: '0.75rem', cursor: 'pointer', background: 'var(--accent-soft)' }}>
-                                  <i className="ti ti-upload"></i> Upload Image or Video File
-                                  <input 
-                                    type="file" 
-                                    accept="image/*,video/mp4,video/webm,video/quicktime" 
-                                    style={{ display: 'none' }} 
-                                    onChange={(e) => handleBentoMediaFileUpload(p.id, e.target.files[0])} 
-                                  />
-                                </label>
-                                <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Select photo (JPG, PNG, WebP) or video (MP4, WebM) file</span>
-                              </div>
+                            <div style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              <span style={{ fontWeight: 650, fontSize: '0.88rem', color: 'var(--text-primary)', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                                {p.title || 'Untitled Project'}
+                              </span>
+                              <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
+                                {p.tag || 'NO TAG'} • {p.sizeClass || 'bento-medium'}
+                              </span>
                             </div>
+                          </div>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+                            <button 
+                              type="button" 
+                              className="cms-expand-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setExpandedBentoIds(prev => ({ ...prev, [p.id]: !prev[p.id] }));
+                              }}
+                            >
+                              <i className={`ti ${isExpanded ? 'ti-chevron-up' : 'ti-chevron-down'}`}></i>
+                              <span>{isExpanded ? 'Close' : 'v Details'}</span>
+                            </button>
+                            <button 
+                              type="button"
+                              className="btn-xs btn-xs-del" 
+                              style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                              onClick={(e) => { e.stopPropagation(); deleteBentoProject(p.id); }}
+                              title="Delete Project"
+                            >
+                              <i className="ti ti-trash"></i>
+                            </button>
                           </div>
                         </div>
 
-                        {/* Event URL for View More Button */}
-                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                          <label className="form-label">Event Link URL (Powers "VIEW MORE" Button)</label>
-                          <input 
-                            type="url" 
-                            className="form-input" 
-                            placeholder="https://www.instagram.com/rotaractclubstv or event registration page link" 
-                            value={p.eventUrl || ''} 
-                            onChange={(e) => updateBentoProject(p.id, { eventUrl: e.target.value })} 
-                          />
-                        </div>
+                        {/* EXPANDABLE ACCORDION CONTENT */}
+                        {isExpanded && (
+                          <div className="cms-form-grid" style={{ marginTop: '0.65rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-subtle)' }}>
+                            <div className="form-group">
+                              <label className="form-label">Project Title</label>
+                              <input type="text" className="form-input" value={p.title} onChange={(e) => updateBentoProject(p.id, { title: e.target.value })} />
+                            </div>
+                            <div className="form-group">
+                              <label className="form-label">Tag Category</label>
+                              <input type="text" className="form-input" value={p.tag} onChange={(e) => updateBentoProject(p.id, { tag: e.target.value.toUpperCase() })} />
+                            </div>
+                            <div className="form-group">
+                              <label className="form-label">Card Size Class</label>
+                              <select className="form-input" value={p.sizeClass || 'bento-medium'} onChange={(e) => updateBentoProject(p.id, { sizeClass: e.target.value })}>
+                                <option value="bento-large">bento-large (Tall 9:16)</option>
+                                <option value="bento-medium">bento-medium (Medium 4:5)</option>
+                                <option value="bento-small">bento-small (Small 3:2)</option>
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <label className="form-label">Tabler Icon Class</label>
+                              <input type="text" className="form-input" value={p.icon || 'ti-flame'} onChange={(e) => updateBentoProject(p.id, { icon: e.target.value })} />
+                            </div>
 
-                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                          <label className="form-label">Short Summary</label>
-                          <input type="text" className="form-input" value={p.desc} onChange={(e) => updateBentoProject(p.id, { desc: e.target.value })} />
-                        </div>
-                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                          <label className="form-label">Full Lightbox Story</label>
-                          <textarea className="form-textarea" value={p.fullStory} onChange={(e) => updateBentoProject(p.id, { fullStory: e.target.value })}></textarea>
-                        </div>
-                      </div>
+                            {/* Media Type & Upload Section */}
+                            <div className="form-group">
+                              <label className="form-label">Card Media Type</label>
+                              <select className="form-input" value={p.mediaType || 'image'} onChange={(e) => updateBentoProject(p.id, { mediaType: e.target.value })}>
+                                <option value="image">Photo Image</option>
+                                <option value="video">4-Second Video Loop (MP4/WebM)</option>
+                              </select>
+                            </div>
 
-                      <div style={{ textAlign: 'right', marginTop: '0.75rem' }}>
-                        <button className="btn-xs btn-xs-del" onClick={() => deleteBentoProject(p.id)}>
-                          <i className="ti ti-trash"></i> Delete Bento Project Item
-                        </button>
+                            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                              <label className="form-label">Project Media (Image or Video)</label>
+                              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                <div style={{ width: '75px', height: '52px', borderRadius: '6px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
+                                  {isVid ? (
+                                    <video src={p.mediaUrl} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  ) : p.mediaUrl ? (
+                                    <img src={p.mediaUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--accent-primary)' }}>
+                                      <i className="ti ti-photo"></i>
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                                  <input 
+                                    type="text" 
+                                    className="form-input" 
+                                    placeholder="Media URL (e.g. /hero_team_1.jpg, .mp4, or https://...)" 
+                                    value={p.mediaUrl || ''} 
+                                    onChange={(e) => {
+                                      const url = e.target.value;
+                                      const checkVid = url.startsWith('data:video/') || url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.mov') || url.includes('/video/upload/');
+                                      updateBentoProject(p.id, { 
+                                        mediaUrl: url,
+                                        mediaType: checkVid ? 'video' : (p.mediaType || 'image')
+                                      });
+                                    }} 
+                                  />
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <label className="btn btn-outline" style={{ padding: '0.25rem 0.65rem', fontSize: '0.72rem', cursor: 'pointer', background: 'var(--accent-soft)' }}>
+                                      <i className="ti ti-upload"></i> Upload Image/Video
+                                      <input 
+                                        type="file" 
+                                        accept="image/*,video/mp4,video/webm,video/quicktime" 
+                                        style={{ display: 'none' }} 
+                                        onChange={(e) => handleBentoMediaFileUpload(p.id, e.target.files[0])} 
+                                      />
+                                    </label>
+                                    <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>Supports JPG, PNG, WebP photo or MP4/WebM video</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Event URL for View More Button */}
+                            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                              <label className="form-label">Event Link URL (Powers "VIEW MORE" Button)</label>
+                              <input 
+                                type="url" 
+                                className="form-input" 
+                                placeholder="https://www.instagram.com/rotaractclubstv or event registration page link" 
+                                value={p.eventUrl || ''} 
+                                onChange={(e) => updateBentoProject(p.id, { eventUrl: e.target.value })} 
+                              />
+                            </div>
+
+                            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                              <label className="form-label">Short Summary</label>
+                              <input type="text" className="form-input" value={p.desc} onChange={(e) => updateBentoProject(p.id, { desc: e.target.value })} />
+                            </div>
+                            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                              <label className="form-label">Full Lightbox Story</label>
+                              <textarea className="form-textarea" style={{ minHeight: '65px' }} value={p.fullStory} onChange={(e) => updateBentoProject(p.id, { fullStory: e.target.value })}></textarea>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                   <form onSubmit={handleAddBentoProjectSubmit} className="add-member-card" style={{ background: 'var(--bg-surface-light)', marginTop: '1.5rem' }}>
                     <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>Add New Bento Gallery Item</h4>

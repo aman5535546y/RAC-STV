@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSiteContent } from '../context/SiteContentContext';
-import RotaryWheelIcon from './RotaryWheelIcon';
 import './Footer.css';
 
 export default function Footer() {

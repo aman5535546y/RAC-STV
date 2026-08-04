@@ -127,14 +127,16 @@
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover {
   color: var(--text-primary);
   background: var(--accent-soft);
 }
 
 .nav-link.active {
-  color: var(--text-primary);
+  color: #FFFFFF;
+  background: var(--accent-primary);
   font-weight: 600;
+  box-shadow: 0 0 16px rgba(90, 15, 45, 0.4);
 }
 
 .mobile-toggle {

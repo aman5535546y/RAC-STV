@@ -1,32 +1,35 @@
 :root {
-  /* Color Palette - Ultra-Minimal Premium Monochrome with Glass Architecture */
-  --bg-dark: #09090B;
-  --bg-surface: #121215;
-  --bg-surface-light: #18181C;
-  --bg-card: rgba(24, 24, 28, 0.65);
-  --bg-card-hover: rgba(32, 32, 38, 0.85);
+  /* Color Palette - Premium Editorial Maroon & Dark Luxury Aesthetic */
+  --bg-dark: #0E0E10;
+  --bg-surface: #151518;
+  --bg-surface-light: #1C1C20;
+  --bg-card: #18181B;
+  --bg-card-hover: #202024;
   
-  /* Primary Minimal Accents (High Contrast White in Dark Mode) */
-  --accent-primary: #FFFFFF;
-  --accent-hover: #E4E4E7;
-  --accent-soft: rgba(255, 255, 255, 0.08);
-  --accent-glow: 0 0 20px rgba(255, 255, 255, 0.12);
-  --accent-gradient: linear-gradient(135deg, #FFFFFF 0%, #E4E4E7 100%);
+  /* Primary Brand Color (Maroon) */
+  --accent-primary: #5A0F2D;
+  --accent-hover: #6E1637;
+  --accent-soft: rgba(90, 15, 45, 0.22);
+  --accent-soft-hover: rgba(110, 22, 55, 0.35);
+  --accent-glow: 0 0 25px rgba(90, 15, 45, 0.4);
+  --accent-gradient: linear-gradient(135deg, #5A0F2D 0%, #7D1F42 100%);
   
-  --text-primary: #FAFAFA;
-  --text-muted: #A1A1AA;
-  --text-dim: #71717A;
+  /* Typography Colors */
+  --text-primary: #FFFFFF;
+  --text-muted: #E4E4E7;
+  --text-dim: #A1A1AA;
   
-  --border-subtle: rgba(255, 255, 255, 0.12);
-  --border-focus: rgba(255, 255, 255, 0.4);
-  --border-glow: 0 0 12px rgba(255, 255, 255, 0.15);
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(90, 15, 45, 0.6);
+  --border-glow: 0 0 16px rgba(90, 15, 45, 0.35);
   
-  /* Typography Scale (Reduced 10-15%) */
-  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Typography Scale */
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
   
-  /* Spacing Scale (Increased Whitespace & Breathing Room) */
+  /* Spacing Scale */
   --space-xs: 0.35rem;
   --space-sm: 0.75rem;
   --space-md: 1.25rem;
@@ -34,7 +37,7 @@
   --space-xl: 3.5rem;
   --space-2xl: 5.5rem;
   
-  /* Layout & Geometry */
+  /* Layout & Geometry (90-95% Viewport Span, 1720px Max Width) */
   --container-max: 1720px;
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -42,37 +45,37 @@
   --radius-pill: 999px;
   
   /* Glassmorphism */
-  --glass-bg: rgba(9, 9, 11, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(14, 14, 16, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.08);
   --glass-backdrop: blur(20px);
   
   /* Animations & Transitions */
   --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* LIGHT THEME VARIABLES */
+/* LIGHT THEME VARIABLES (Warm Editorial Luxury Light Mode) */
 html[data-theme="light"] {
-  --bg-dark: #FAFAFA;
+  --bg-dark: #F5F5F7;
   --bg-surface: #FFFFFF;
-  --bg-surface-light: #F4F4F5;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(244, 244, 245, 0.95);
+  --bg-surface-light: #EFEFEF;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-hover: rgba(245, 245, 247, 0.98);
   
-  --accent-primary: #09090B;
-  --accent-hover: #18181B;
-  --accent-soft: rgba(9, 9, 11, 0.05);
-  --accent-glow: 0 0 20px rgba(0, 0, 0, 0.08);
-  --accent-gradient: linear-gradient(135deg, #09090B 0%, #27272A 100%);
+  --accent-primary: #5A0F2D;
+  --accent-hover: #6E1637;
+  --accent-soft: rgba(90, 15, 45, 0.1);
+  --accent-soft-hover: rgba(110, 22, 55, 0.18);
+  --accent-glow: 0 0 25px rgba(90, 15, 45, 0.18);
   
-  --text-primary: #09090B;
-  --text-muted: #52525B;
-  --text-dim: #A1A1AA;
+  --text-primary: #0E0E10;
+  --text-muted: #3F3F46;
+  --text-dim: #71717A;
   
-  --border-subtle: rgba(0, 0, 0, 0.12);
-  --border-focus: rgba(0, 0, 0, 0.4);
-  --border-glow: 0 0 12px rgba(0, 0, 0, 0.1);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(90, 15, 45, 0.5);
+  --border-glow: 0 0 16px rgba(90, 15, 45, 0.15);
   
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(0, 0, 0, 0.08);
 }
