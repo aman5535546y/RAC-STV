@@ -361,10 +361,10 @@ html[data-theme="light"] .carousel-active-glider {
   background: var(--bg-card);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: none;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: box-shadow 0.3s ease;
   overflow: hidden;
 }
 
@@ -656,13 +656,13 @@ html[data-theme="light"] .carousel-active-glider {
   width: 100%;
   margin-bottom: 12px;
   background: #0A0A0C;
-  border: 1px solid var(--border-subtle);
+  border: none;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
   box-sizing: border-box;
 }
 

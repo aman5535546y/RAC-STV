@@ -19,8 +19,8 @@
   --text-muted: #E4E4E7;
   --text-dim: #A1A1AA;
   
-  /* Borders & Dividers */
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  /* Borders & Dividers - Set transparent to eliminate all division lines */
+  --border-subtle: transparent;
   --border-focus: rgba(90, 15, 45, 0.6);
   --border-glow: 0 0 16px rgba(90, 15, 45, 0.35);
   
@@ -38,8 +38,8 @@
   --space-xl: 3.5rem;
   --space-2xl: 5.5rem;
   
-  /* Layout & Geometry (90-95% Viewport Span, 1720px Max Width) */
-  --container-max: 1720px;
+  /* Layout & Geometry (90-95% Viewport Span, 1750px Max Width) */
+  --container-max: 1750px;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 24px;
@@ -47,7 +47,7 @@
   
   /* Glassmorphism */
   --glass-bg: rgba(14, 14, 16, 0.82);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border: transparent;
   --glass-backdrop: blur(20px);
   
   /* Animations & Transitions */
@@ -73,10 +73,10 @@ html[data-theme="light"] {
   --text-muted: #3F3F46;
   --text-dim: #71717A;
   
-  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-subtle: transparent;
   --border-focus: rgba(90, 15, 45, 0.5);
   --border-glow: 0 0 16px rgba(90, 15, 45, 0.15);
   
   --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border: transparent;
 }
