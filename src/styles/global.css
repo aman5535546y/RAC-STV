@@ -93,14 +93,19 @@ a {
   transition: color var(--transition-fast);
 }
 
-/* Container (Full-Width 92% Viewport Span, 1720px Max Width) */
+/* Container (Full-Width 92% Viewport Span, 1750px Max Width) */
 .container {
   width: 92%;
-  max-width: 1720px;
+  max-width: 1750px;
   margin-left: auto;
   margin-right: auto;
   padding-left: clamp(1rem, 2vw, 2.5rem);
   padding-right: clamp(1rem, 2vw, 2.5rem);
+}
+
+/* Global Section Continuity & Divider Clean-up */
+hr, .section-divider {
+  display: none !important;
 }
 
 /* Layout Main Content Shell */

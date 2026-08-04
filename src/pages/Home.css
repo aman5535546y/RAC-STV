@@ -193,12 +193,12 @@ html[data-theme="light"] .carousel-active-glider {
   box-shadow: 0 0 8px rgba(9, 9, 11, 0.5);
 }
 
-/* About Section */
+/* About Section - Continuous Layout */
 .about-section {
-  padding: 6rem 0;
+  padding: 3.5rem 0;
   background: var(--bg-surface);
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  border-top: none;
+  border-bottom: none;
 }
 
 .about-grid {
@@ -562,18 +562,18 @@ html[data-theme="light"] .carousel-active-glider {
 /* WIREFRAME BENTO GRID PHOTOS & PROJECTS SECTION (100% 1-Screen Viewport Fit) */
 /* ========================================================= */
 .projects-section {
-  padding: 0.5rem 0 0.75rem;
+  padding: 3.5rem 0;
   background: var(--bg-surface);
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  border-top: none;
+  border-bottom: none;
   position: relative;
 }
 
-/* Compact Container for Projects (Max-Width 1060px for 1-Screen Viewport Fit) */
+/* Expanded Container for Projects (Full Desktop Width 92% / 1750px Max Width) */
 .projects-section .container,
 .projects-page .container {
   width: 92% !important;
-  max-width: 1060px !important;
+  max-width: 1750px !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
@@ -610,12 +610,12 @@ html[data-theme="light"] .carousel-active-glider {
   text-transform: uppercase;
 }
 
-/* Responsive Compact Bento Grid (Exactly 5 Columns on Desktop, 12px Gap) */
+/* Responsive Compact Bento Grid (Exactly 5 Columns on Desktop, 16px Gap) */
 .bento-photos-grid {
   column-count: 5;
-  column-gap: 12px;
+  column-gap: 16px;
   width: 100%;
-  max-width: 1060px;
+  max-width: 1750px;
   margin: 0 auto 0.5rem auto;
 }
 
@@ -1190,14 +1190,14 @@ html[data-theme="light"] .carousel-active-glider {
   border-color: #d32b69;
 }
 
-/* Partner Clubs Infinite Marquee Section (Full-Width Viewport & Ultra-High Contrast) */
+/* Partner Clubs Infinite Marquee Section (Full-Width Viewport & Continuous Layout) */
 .partner-clubs-section {
-  padding: 2.75rem 0 3.25rem;
+  padding: 3.5rem 0;
   background: var(--bg-surface);
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  border-top: none;
+  border-bottom: none;
 }
 
 /* Break out of container to span 100% of viewport width with zero side gaps */
