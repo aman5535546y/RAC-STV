@@ -1123,6 +1123,15 @@ html[data-theme="light"] .carousel-active-glider {
   border-right: 1px solid var(--border-subtle);
 }
 
+.project-list-date-num {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
 .project-list-day {
   font-family: var(--font-heading);
   font-size: 1.85rem;

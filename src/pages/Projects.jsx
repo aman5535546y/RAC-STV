@@ -28,16 +28,63 @@ export default function Projects() {
     return 0;
   };
 
-  // Extract day and month/year for list format date callout
-  const parseDateCallout = (dateStr) => {
-    if (!dateStr) return { day: '15', monthYear: 'OCT 2025' };
-    const tokens = dateStr.trim().split(/\s+/);
-    if (tokens.length === 3) {
-      return { day: tokens[0], monthYear: `${tokens[1]} ${tokens[2]}` };
-    } else if (tokens.length === 2) {
-      return { day: tokens[0].substring(0, 3), monthYear: tokens[1] };
+  const monthNamesMap = {
+    '01': 'JAN', '1': 'JAN', 'JAN': 'JAN', 'JANUARY': 'JAN',
+    '02': 'FEB', '2': 'FEB', 'FEB': 'FEB', 'FEBRUARY': 'FEB',
+    '03': 'MAR', '3': 'MAR', 'MAR': 'MAR', 'MARCH': 'MAR',
+    '04': 'APR', '4': 'APR', 'APR': 'APR', 'APRIL': 'APR',
+    '05': 'MAY', '5': 'MAY', 'MAY': 'MAY',
+    '06': 'JUN', '6': 'JUN', 'JUN': 'JUN', 'JUNE': 'JUN',
+    '07': 'JUL', '7': 'JUL', 'JUL': 'JUL', 'JULY': 'JUL',
+    '08': 'AUG', '8': 'AUG', 'AUG': 'AUG', 'AUGUST': 'AUG',
+    '09': 'SEP', '9': 'SEP', 'SEP': 'SEP', 'SEPTEMBER': 'SEP',
+    '10': 'OCT', 'OCT': 'OCT', 'OCTOBER': 'OCT',
+    '11': 'NOV', 'NOV': 'NOV', 'NOVEMBER': 'NOV',
+    '12': 'DEC', 'DEC': 'DEC', 'DECEMBER': 'DEC'
+  };
+
+  // Extract day, month, and year for list format date callout
+  const parseDateParts = (dateStr) => {
+    if (!dateStr) return { day: '05', month: 'AUG', year: '2026' };
+    const str = dateStr.trim();
+    
+    // Format: dd/mm/yyyy or dd-mm-yyyy
+    if (/^\d{1,2}[\/\.-]\d{1,2}[\/\.-]\d{4}$/.test(str)) {
+      const parts = str.split(/[\/\.-]/);
+      const d = parts[0].padStart(2, '0');
+      const mKey = parts[1].padStart(2, '0');
+      const m = monthNamesMap[mKey] || 'AUG';
+      const y = parts[2];
+      return { day: d, month: m, year: y };
     }
-    return { day: '15', monthYear: dateStr };
+
+    // Format: yyyy-mm-dd
+    if (/^\d{4}[\/\.-]\d{1,2}[\/\.-]\d{1,2}$/.test(str)) {
+      const parts = str.split(/[\/\.-]/);
+      const y = parts[0];
+      const mKey = parts[1].padStart(2, '0');
+      const m = monthNamesMap[mKey] || 'AUG';
+      const d = parts[2].padStart(2, '0');
+      return { day: d, month: m, year: y };
+    }
+
+    // Format: "15 AUG 2026" or "05 OCT 2025"
+    const tokens = str.split(/\s+/);
+    if (tokens.length === 3) {
+      const d = /^\d+$/.test(tokens[0]) ? tokens[0].padStart(2, '0') : '05';
+      const m = monthNamesMap[tokens[0].toUpperCase()] || monthNamesMap[tokens[1].toUpperCase()] || tokens[1].substring(0, 3).toUpperCase();
+      const y = tokens[2];
+      return { day: d, month: m, year: y };
+    }
+
+    // Format: "AUG 2026"
+    if (tokens.length === 2) {
+      const m = monthNamesMap[tokens[0].toUpperCase()] || tokens[0].substring(0, 3).toUpperCase();
+      const y = tokens[1];
+      return { day: '05', month: m, year: y };
+    }
+
+    return { day: '05', month: 'AUG', year: '2026' };
   };
 
   // Sort events strictly according to event date
@@ -126,7 +173,7 @@ export default function Projects() {
         {viewMode === 'list' ? (
           <div className="project-list-container">
             {sortedProjects.map((item) => {
-              const { day, monthYear } = parseDateCallout(item.date);
+              const { day, month, year } = parseDateParts(item.date);
               const isVid = isMediaVideo(item);
               return (
                 <div 
@@ -134,10 +181,11 @@ export default function Projects() {
                   className="project-list-row"
                   onClick={() => setSelectedProject(item)}
                 >
-                  {/* Left Column: Date Callout */}
+                  {/* Left Column: Date Callout (Stacked: Day -> Month -> Year) */}
                   <div className="project-list-date-col">
-                    <span className="project-list-day">{day}</span>
-                    <span className="project-list-month">{monthYear}</span>
+                    <span className="project-list-date-num">{day}</span>
+                    <span className="project-list-day">{month}</span>
+                    <span className="project-list-month">{year}</span>
                   </div>
 
                   {/* Middle Column: Event Title, Metadata, Summary */}
