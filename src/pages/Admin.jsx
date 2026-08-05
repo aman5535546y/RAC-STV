@@ -1204,67 +1204,146 @@ export default function Admin() {
                     <div className="cms-section-title">
                       <i className="ti ti-users"></i> EDIT EXECUTIVE BOARD MEMBERS
                     </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '1.5rem' }}>
-                    {content.board.map((b) => (
-                      <div key={b.id} className="cms-item-card" style={{ background: 'var(--bg-surface-light)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                          <span className="badge-mono"><i className="ti ti-user"></i> {b.name}</span>
-                          <button className="btn-xs btn-xs-del" onClick={() => deleteBoardMember(b.id)}>
-                            <i className="ti ti-trash"></i> Delete
-                          </button>
-                        </div>
 
-                        <div className="cms-form-grid">
-                          <div className="form-group">
-                            <label className="form-label">Position Title (CAPITAL)</label>
-                            <input type="text" className="form-input" value={b.role} onChange={(e) => updateBoardMember(b.id, { role: e.target.value.toUpperCase() })} />
-                          </div>
-                          <div className="form-group">
-                            <label className="form-label">Leader Name</label>
-                            <input type="text" className="form-input" value={b.name} onChange={(e) => updateBoardMember(b.id, { name: e.target.value })} />
-                          </div>
-                          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                            <label className="form-label">Leader Photo Image (Upload File or Enter URL)</label>
-                            <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-                              <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
-                                <img src={b.photo || '/hero_team_1.jpg'} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                              </div>
+                    {/* Global Expand / Collapse Control for Board Leaders (Photo 2 Reference) */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                        TOTAL LEADERS: {content.board.length}
+                      </span>
+                      <button 
+                        type="button" 
+                        className="btn-xs btn-outline"
+                        style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem' }}
+                        onClick={() => {
+                          const allExpanded = Object.keys(expandedBoardIds).length === content.board.length;
+                          if (allExpanded) {
+                            setExpandedBoardIds({});
+                          } else {
+                            const newMap = {};
+                            content.board.forEach(b => newMap[b.id] = true);
+                            setExpandedBoardIds(newMap);
+                          }
+                        }}
+                      >
+                        {Object.keys(expandedBoardIds).length === content.board.length ? 'Collapse All' : 'Expand All'}
+                      </button>
+                    </div>
 
-                              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                                <input 
-                                  type="text" 
-                                  className="form-input" 
-                                  placeholder="e.g. /hero_team_1.jpg or https://..." 
-                                  value={b.photo || ''} 
-                                  onChange={(e) => updateBoardMember(b.id, { photo: e.target.value })} 
-                                />
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                                  <label className="btn btn-outline" style={{ padding: '0.35rem 0.85rem', fontSize: '0.75rem', cursor: 'pointer', background: 'var(--accent-soft)' }}>
-                                    <i className="ti ti-upload"></i> Upload Photo File
-                                    <input 
-                                      type="file" 
-                                      accept="image/*" 
-                                      style={{ display: 'none' }} 
-                                      onChange={(e) => handleBoardPhotoFileUpload(b.id, e.target.files[0])} 
-                                    />
-                                  </label>
-                                  <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Select image file from computer</span>
+                    {/* ACCORDION CARDS FOR BOARD MEMBERS */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                      {content.board.map((b, idx) => {
+                        const isExpanded = !!expandedBoardIds[b.id];
+
+                        return (
+                          <div key={b.id} className="cms-item-card" style={{ padding: '0.75rem 0.9rem' }}>
+                            {/* ACCORDION HEADER (PHOTO 2 DESIGN) */}
+                            <div 
+                              className="cms-item-header"
+                              onClick={() => setExpandedBoardIds(prev => ({ ...prev, [b.id]: !prev[b.id] }))}
+                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', cursor: 'pointer', userSelect: 'none' }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, minWidth: 0 }}>
+                                {/* Sequential Number Badge */}
+                                <span className="cms-seq-badge">
+                                  #{idx + 1}
+                                </span>
+
+                                {/* Mini Leader Photo Preview */}
+                                <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', background: '#000', flexShrink: 0, border: '1px solid var(--border-subtle)' }}>
+                                  {b.photo ? (
+                                    <img src={b.photo} alt={b.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: '0.85rem', color: 'var(--text-muted)' }}>👤</div>
+                                  )}
+                                </div>
+
+                                <div style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  <span style={{ fontWeight: 650, fontSize: '0.9rem', color: 'var(--text-primary)', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                                    {b.name || 'Unnamed Leader'}
+                                  </span>
+                                  <span style={{ fontSize: '0.72rem', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                                    {b.role || 'MEMBER'}
+                                  </span>
                                 </div>
                               </div>
+
+                              {/* Action Buttons: v Details + Delete */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+                                <button 
+                                  type="button" 
+                                  className="btn-xs btn-outline"
+                                  style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.75rem', padding: '0.2rem 0.55rem' }}
+                                >
+                                  <i className={`ti ${isExpanded ? 'ti-chevron-up' : 'ti-chevron-down'}`} style={{ fontSize: '0.85rem' }}></i>
+                                  <span>{isExpanded ? 'Close' : 'v Details'}</span>
+                                </button>
+                                <button 
+                                  type="button"
+                                  className="btn-xs btn-xs-del" 
+                                  style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                                  onClick={(e) => { e.stopPropagation(); deleteBoardMember(b.id); }}
+                                  title="Delete Board Member"
+                                >
+                                  <i className="ti ti-trash"></i>
+                                </button>
+                              </div>
                             </div>
+
+                            {/* EXPANDABLE ACCORDION FORM PANEL */}
+                            {isExpanded && (
+                              <div className="cms-form-grid" style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)' }}>
+                                <div className="form-group">
+                                  <label className="form-label">Position Title (CAPITAL)</label>
+                                  <input type="text" className="form-input" value={b.role} onChange={(e) => updateBoardMember(b.id, { role: e.target.value.toUpperCase() })} />
+                                </div>
+                                <div className="form-group">
+                                  <label className="form-label">Leader Name</label>
+                                  <input type="text" className="form-input" value={b.name} onChange={(e) => updateBoardMember(b.id, { name: e.target.value })} />
+                                </div>
+                                <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                                  <label className="form-label">Leader Photo Image (Upload File or Enter URL)</label>
+                                  <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+                                    <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
+                                      <img src={b.photo || '/hero_team_1.jpg'} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    </div>
+
+                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                      <input 
+                                        type="text" 
+                                        className="form-input" 
+                                        placeholder="e.g. /hero_team_1.jpg or https://..." 
+                                        value={b.photo || ''} 
+                                        onChange={(e) => updateBoardMember(b.id, { photo: e.target.value })} 
+                                      />
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                                        <label className="btn btn-outline" style={{ padding: '0.35rem 0.85rem', fontSize: '0.75rem', cursor: 'pointer', background: 'var(--accent-soft)' }}>
+                                          <i className="ti ti-upload"></i> Upload Photo File
+                                          <input 
+                                            type="file" 
+                                            accept="image/*" 
+                                            style={{ display: 'none' }} 
+                                            onChange={(e) => handleBoardPhotoFileUpload(b.id, e.target.files[0])} 
+                                          />
+                                        </label>
+                                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Select image file from computer</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                                  <label className="form-label">Individual Vision Statement</label>
+                                  <textarea className="form-textarea" style={{ height: '60px' }} value={b.vision || ''} onChange={(e) => updateBoardMember(b.id, { vision: e.target.value })}></textarea>
+                                </div>
+                                <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                                  <label className="form-label">Short Personal Message</label>
+                                  <textarea className="form-textarea" style={{ height: '60px' }} value={b.message || ''} onChange={(e) => updateBoardMember(b.id, { message: e.target.value })}></textarea>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                            <label className="form-label">Individual Vision Statement</label>
-                            <textarea className="form-textarea" style={{ height: '60px' }} value={b.vision || ''} onChange={(e) => updateBoardMember(b.id, { vision: e.target.value })}></textarea>
-                          </div>
-                          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                            <label className="form-label">Short Personal Message</label>
-                            <textarea className="form-textarea" style={{ height: '60px' }} value={b.message || ''} onChange={(e) => updateBoardMember(b.id, { message: e.target.value })}></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                        );
+                      })}
+                    </div>
 
                   {/* Add New Board Member Form */}
                   <form onSubmit={handleAddBoardMemberSubmit} className="add-member-form" style={{ background: 'var(--bg-surface-light)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
