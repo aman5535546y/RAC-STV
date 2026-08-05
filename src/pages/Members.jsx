@@ -99,7 +99,15 @@ export default function Members() {
           /* IF LOGGED IN: OFFICIAL MEMBER DASHBOARD & LEADERBOARD */
           <div>
             {/* Dashboard Header with Circular Attendance Gauge */}
-            <div className="dashboard-header">
+            <div 
+              className="dashboard-header"
+              style={{
+                backgroundImage: `url(${content.memberBannerBg || '/member_banner_bg.png'})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            >
               <div className="user-welcome-info">
                 <div className="user-avatar">
                   {loggedInMember.name.split(' ').map(n => n[0]).join('')}

@@ -53,6 +53,7 @@ const defaultPartnerClubs = [
 
 export const defaultSiteContent = {
   theme: defaultTheme,
+  memberBannerBg: '/member_banner_bg.png',
   partnerClubs: defaultPartnerClubs,
   hero: {
     tagline: 'HEAR LEADERS ARE MADE',
@@ -676,6 +677,10 @@ export function SiteContentProvider({ children }) {
     setContent(prev => ({ ...prev, contact: { ...prev.contact, ...contactData } }));
   };
 
+  const updateMemberBannerBg = (url) => {
+    setContent(prev => ({ ...prev, memberBannerBg: url }));
+  };
+
   const resetToDefaults = () => {
     if (window.confirm('Reset all website theme, text, stats, board members, and projects to factory defaults?')) {
       setContent(defaultSiteContent);
@@ -711,6 +716,7 @@ export function SiteContentProvider({ children }) {
       deleteEvent,
       togglePinEvent,
       updateContact,
+      updateMemberBannerBg,
       resetToDefaults
     }}>
       {children}

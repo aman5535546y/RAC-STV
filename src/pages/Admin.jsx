@@ -40,6 +40,7 @@ export default function Admin() {
     deleteEvent,
     togglePinEvent,
     updateContact,
+    updateMemberBannerBg,
     resetToDefaults
   } = useSiteContent();
 
@@ -528,7 +529,16 @@ export default function Admin() {
           /* 2. AUTHENTICATED SINGLE PAGE APPLICATION (SPA) ADMIN DASHBOARD */
           <div className="admin-spa-container">
             {/* Admin Header */}
-            <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
+            <div 
+              className="dashboard-header" 
+              style={{ 
+                backgroundImage: `url(${content.memberBannerBg || '/member_banner_bg.png'})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                marginBottom: '1.5rem' 
+              }}
+            >
               <div className="user-welcome-info">
                 <div className="user-avatar" style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)' }}>
                   <i className={`ti ${authenticatedAdmin?.icon || 'ti-crown'}`}></i>
@@ -675,6 +685,111 @@ export default function Admin() {
                       <div>
                         <div className="metric-val" style={{ fontSize: '1.3rem' }}>{topMember ? topMember.name : 'N/A'}</div>
                         <div className="metric-lbl">Top Active Leader ({topMember ? topMember.points : 0} PTS)</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 🖼️ WELCOME BANNER BACKGROUND CMS PANEL */}
+                {isDashboard && !isForbiddenForManager && (
+                  <div className="cms-editor-card" style={{ marginTop: '1.5rem' }}>
+                    <div className="card-title-bar" style={{ marginBottom: '1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                        <i className="ti ti-photo" style={{ color: 'var(--accent-primary)', fontSize: '1.4rem' }}></i>
+                        <h3 style={{ margin: 0, fontSize: '1.15rem' }}>MEMBER & ADMIN WELCOME BANNER BACKGROUND CMS</h3>
+                      </div>
+                      <span className="badge-mono" style={{ background: 'var(--accent-soft)', color: 'var(--accent-primary)', borderColor: 'var(--accent-primary)' }}>
+                        LIVE HEADER BACKDROP
+                      </span>
+                    </div>
+
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.25rem', lineHeight: '1.5' }}>
+                      Upload or custom-select the background photo for the Welcome Header Card rendered across both the <strong>Member Portal Dashboard</strong> and <strong>Admin Dashboard</strong>.
+                    </p>
+
+                    {/* LIVE BANNER PREVIEW BOX */}
+                    <div 
+                      style={{
+                        width: '100%',
+                        minHeight: '130px',
+                        borderRadius: '12px',
+                        backgroundImage: `url(${content.memberBannerBg || '/member_banner_bg.png'})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        padding: '1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        border: '1px solid var(--border-subtle)',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                        marginBottom: '1.25rem',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ width: '55px', height: '55px', borderRadius: '50%', background: 'linear-gradient(135deg, #d32b69 0%, #b82358 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', fontWeight: 'bold', fontSize: '1.3rem', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+                          AY
+                        </div>
+                        <div>
+                          <span className="badge-mono" style={{ fontSize: '0.75rem', background: 'rgba(90,15,45,0.25)', borderColor: 'rgba(90,15,45,0.4)', color: '#FFF' }}>PRESIDENT</span>
+                          <h4 style={{ margin: '0.2rem 0 0', fontSize: '1.25rem', color: '#FFF', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>WELCOME BACK, AMAN YADAV!</h4>
+                          <p style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)' }}>Rotaract STV Verified Official Member</p>
+                        </div>
+                      </div>
+                      <span className="badge-mono" style={{ background: 'rgba(0,0,0,0.5)', color: '#FFF', backdropFilter: 'blur(4px)' }}>
+                        LIVE PREVIEW
+                      </span>
+                    </div>
+
+                    {/* UPLOAD & CONTROLS GRID */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', alignItems: 'end' }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                          <i className="ti ti-upload"></i> Upload Custom Banner Photo:
+                        </label>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="form-input" 
+                          style={{ padding: '0.45rem' }}
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (evt) => {
+                                updateMemberBannerBg(evt.target.result);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                          <i className="ti ti-link"></i> Or Paste Image URL:
+                        </label>
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          placeholder="/member_banner_bg.png or https://..."
+                          value={content.memberBannerBg || ''}
+                          onChange={(e) => updateMemberBannerBg(e.target.value)}
+                        />
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button 
+                          type="button" 
+                          className="btn btn-outline" 
+                          style={{ flex: 1, padding: '0.65rem', fontSize: '0.85rem' }}
+                          onClick={() => updateMemberBannerBg('/member_banner_bg.png')}
+                          title="Reset to default Photo 2 paint-splatter art"
+                        >
+                          <i className="ti ti-rotate"></i> Reset Photo-2
+                        </button>
                       </div>
                     </div>
                   </div>
