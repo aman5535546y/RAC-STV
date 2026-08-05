@@ -6,12 +6,45 @@ import './Navbar.css';
 
 export default function Navbar() {
   const { content, toggleThemeMode } = useSiteContent();
-  const { loggedInMember, logout, authenticatedAdmin, adminLogout, setAdminActiveSection, openLoginModal } = useMembers();
+  const { loggedInMember, logout, authenticatedAdmin, setAuthenticatedAdmin, adminLogout, setAdminActiveSection, openLoginModal } = useMembers();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showAttendanceModal, setShowAttendanceModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const handleGoToDashboard = () => {
+    setShowDropdown(false);
+    closeMenu();
+
+    const isPrivileged = authenticatedAdmin || (
+      loggedInMember && (
+        loggedInMember.userRole === 'admin' ||
+        loggedInMember.userRole === 'manager' ||
+        ['PRESIDENT', 'PRESIDENT ELECT', 'OVERALL MANAGER', 'TECHNICAL HEAD'].includes((loggedInMember.role || '').toUpperCase())
+      )
+    );
+
+    if (isPrivileged) {
+      if (!authenticatedAdmin && loggedInMember) {
+        const uRole = loggedInMember.userRole || (
+          loggedInMember.role === 'PRESIDENT' || loggedInMember.role === 'PRESIDENT ELECT' ? 'admin' : 'manager'
+        );
+        const adminObj = {
+          id: loggedInMember.id,
+          name: loggedInMember.name,
+          role: loggedInMember.role,
+          userRole: uRole,
+          passcode: loggedInMember.password || 'password123'
+        };
+        setAuthenticatedAdmin(adminObj);
+        try { localStorage.setItem('rotaract_stv_auth_admin', JSON.stringify(adminObj)); } catch {}
+      }
+      navigate('/admin');
+    } else {
+      navigate('/members');
+    }
+  };
 
   const handleAdminSelectSection = (sec) => {
     setAdminActiveSection(sec);
@@ -173,7 +206,7 @@ export default function Navbar() {
 
                       <button 
                         className="dropdown-item" 
-                        onClick={() => { setShowDropdown(false); closeMenu(); navigate('/members'); }}
+                        onClick={handleGoToDashboard}
                       >
                         <i className="ti ti-dashboard" style={{ color: 'var(--accent-primary)' }}></i> My Dashboard
                       </button>

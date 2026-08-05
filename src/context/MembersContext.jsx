@@ -523,6 +523,7 @@ export function MembersProvider({ children }) {
       loginWithGoogle,
       logout,
       authenticatedAdmin,
+      setAuthenticatedAdmin,
       adminLogin,
       adminLogout,
       adminActiveSection,
