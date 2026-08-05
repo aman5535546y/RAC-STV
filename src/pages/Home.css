@@ -920,7 +920,7 @@ html[data-theme="light"] .carousel-active-glider {
 }
 
 .bento-modal-content .hero-title {
-  color: var(--accent-primary) !important;
+  color: var(--text-primary) !important;
 }
 
 .bento-modal-close {
