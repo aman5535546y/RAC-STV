@@ -502,11 +502,11 @@
   font-family: var(--font-mono);
   font-size: 0.68rem;
   font-weight: 700;
-  color: #EC4899;
+  color: var(--accent-primary);
   letter-spacing: 0.06em;
   margin-top: 3px;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(236, 72, 153, 0.7);
+  text-shadow: 0 0 10px rgba(90, 15, 45, 0.5);
 }
 
 .modern-attendance-right {
@@ -548,7 +548,7 @@
   font-family: var(--font-mono);
   font-size: 0.82rem;
   font-weight: 700;
-  color: #EC4899;
+  color: var(--accent-primary);
   letter-spacing: 0.08em;
 }
 
@@ -684,9 +684,9 @@
 }
 
 .event-type-badge.type-event {
-  background: rgba(236, 72, 153, 0.15);
-  color: #EC4899;
-  border: 1px solid rgba(236, 72, 153, 0.35);
+  background: rgba(90, 15, 45, 0.15);
+  color: var(--accent-primary);
+  border: 1px solid rgba(90, 15, 45, 0.35);
 }
 
 .event-type-badge.type-meeting {

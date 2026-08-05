@@ -121,16 +121,16 @@ export default function Members() {
                 >
                   <svg className="modern-circle-svg" viewBox="0 0 100 100">
                     <defs>
-                      {/* Purple -> Pink -> Blue Gradient */}
+                      {/* Purple -> Maroon -> Blue Gradient */}
                       <linearGradient id="purplePinkBlueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#8B5CF6" />
-                        <stop offset="50%" stopColor="#EC4899" />
+                        <stop offset="50%" stopColor="#5A0F2D" />
                         <stop offset="100%" stopColor="#3B82F6" />
                       </linearGradient>
 
                       {/* Subtle Glow Effect */}
                       <filter id="purplePinkBlueGlow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#EC4899" floodOpacity="0.6" />
+                        <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#5A0F2D" floodOpacity="0.6" />
                       </filter>
                     </defs>
 
@@ -170,7 +170,7 @@ export default function Members() {
                 {/* RIGHT SIDE: ATTENDANCE OVERVIEW & 8 / 10 EVENT */}
                 <div className="modern-attendance-right">
                   <div className="modern-overview-title">
-                    <i className="ti ti-chart-donut" style={{ color: '#EC4899' }}></i> Attendance Overview
+                    <i className="ti ti-chart-donut" style={{ color: '#5A0F2D' }}></i> Attendance Overview
                   </div>
                   <div className="modern-event-stats">
                     <span className="event-count-highlight">{attendedEventsCount} / {totalEventsCount}</span>
@@ -306,7 +306,7 @@ export default function Members() {
 
                         <div className="event-meta-list">
                           <div className="event-meta-row">
-                            <i className="ti ti-calendar-stats" style={{ color: '#EC4899' }}></i>
+                            <i className="ti ti-calendar-stats" style={{ color: 'var(--accent-primary)' }}></i>
                             <span><strong>Date:</strong> {evt.date} {evt.time ? `(${evt.time})` : ''}</span>
                           </div>
                           <div className="event-meta-row">

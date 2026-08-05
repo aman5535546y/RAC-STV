@@ -518,7 +518,7 @@ export default function Admin() {
             <button 
               type="button" 
               className="btn btn-primary" 
-              style={{ width: '100%', padding: '0.8rem', fontSize: '0.95rem', background: '#FF2E93', borderColor: '#FF2E93', fontWeight: '700', borderRadius: '8px', cursor: 'pointer' }}
+              style={{ width: '100%', padding: '0.8rem', fontSize: '0.95rem', background: 'var(--accent-primary)', borderColor: 'var(--accent-primary)', fontWeight: '700', borderRadius: '8px', cursor: 'pointer' }}
               onClick={() => openLoginModal('admin')}
             >
               <i className="ti ti-key"></i> Open Login Modal →
@@ -534,7 +534,7 @@ export default function Admin() {
                   <i className={`ti ${authenticatedAdmin?.icon || 'ti-crown'}`}></i>
                 </div>
                 <div className="user-title-box">
-                  <span className="badge-mono" style={{ borderColor: isManagerMode ? 'rgba(59, 130, 246, 0.4)' : 'rgba(236, 72, 153, 0.4)', color: isManagerMode ? '#60A5FA' : '#FF2E93', background: isManagerMode ? 'rgba(59, 130, 246, 0.15)' : 'rgba(236, 72, 153, 0.15)' }}>
+                  <span className="badge-mono" style={{ borderColor: isManagerMode ? 'rgba(59, 130, 246, 0.4)' : 'rgba(90, 15, 45, 0.4)', color: isManagerMode ? '#60A5FA' : '#E4E4E7', background: isManagerMode ? 'rgba(59, 130, 246, 0.15)' : 'rgba(90, 15, 45, 0.15)' }}>
                     ROLE: {isManagerMode ? 'MANAGER (LIMITED ACCESS)' : 'ADMINISTRATOR (FULL ACCESS)'}
                   </span>
                   <h2>WELCOME, {(authenticatedAdmin?.name || 'USER').toUpperCase()}!</h2>

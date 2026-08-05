@@ -142,41 +142,40 @@ hr, .section-divider {
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* DARK SECTION & DARK MODE BUTTONS */
-html[data-theme="dark"] .btn-primary,
-.btn-primary,
-.btn-dark {
-  background: var(--accent-primary);
+/* EXECUTIVE PHOTO-2 STYLE BUTTONS (Translucent Soft Glass Pill + Delicate Maroon Border, Zero Blur Shadow Halo) */
+.btn,
+.btn-primary {
+  background: rgba(90, 15, 45, 0.22);
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 16px rgba(90, 15, 45, 0.35);
+  border: 1px solid rgba(110, 22, 55, 0.45);
+  box-shadow: none !important;
 }
 
-html[data-theme="dark"] .btn-primary:hover,
-.btn-primary:hover,
-.btn-dark:hover {
-  background: var(--accent-hover) !important;
+.btn-primary:hover {
+  background: rgba(110, 22, 55, 0.38) !important;
   color: #FFFFFF !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 6px 24px rgba(110, 22, 55, 0.45);
+  border-color: rgba(125, 31, 66, 0.65) !important;
+  box-shadow: none !important;
   transform: translateY(-1px);
 }
 
-/* LIGHT SECTION & LIGHT MODE BUTTONS */
+/* LIGHT MODE PHOTO-2 STYLE BUTTONS (Soft Off-White Glass Pill + Maroon Text & Delicate Border, Zero Blur Shadow Halo) */
+html[data-theme="light"] .btn,
 html[data-theme="light"] .btn-primary,
 .btn-light {
-  background: var(--accent-primary);
-  color: #FFFFFF;
-  border: 1px solid rgba(90, 15, 45, 0.2);
-  box-shadow: 0 4px 14px rgba(90, 15, 45, 0.25);
+  background: rgba(245, 235, 240, 0.88);
+  color: #6E1637;
+  border: 1px solid rgba(110, 22, 55, 0.35);
+  box-shadow: none !important;
+  font-weight: 600;
 }
 
 html[data-theme="light"] .btn-primary:hover,
 .btn-light:hover {
-  background: var(--accent-hover) !important;
-  color: #FFFFFF !important;
-  border-color: var(--accent-hover) !important;
-  box-shadow: 0 6px 20px rgba(110, 22, 55, 0.35);
+  background: rgba(240, 225, 232, 0.98) !important;
+  color: #5A0F2D !important;
+  border-color: rgba(110, 22, 55, 0.55) !important;
+  box-shadow: none !important;
   transform: translateY(-1px);
 }
 

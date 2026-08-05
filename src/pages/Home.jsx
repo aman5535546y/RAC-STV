@@ -286,7 +286,7 @@ export default function Home() {
                         <div style={{
                           width: '100%',
                           height: '100%',
-                          backgroundImage: 'radial-gradient(circle at center, rgba(212,19,103,0.3) 0%, rgba(10,10,12,0.9) 100%)'
+                          backgroundImage: 'radial-gradient(circle at center, rgba(90,15,45,0.3) 0%, rgba(10,10,12,0.9) 100%)'
                         }}></div>
                       )}
                     </div>

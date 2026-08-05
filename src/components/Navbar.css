@@ -133,10 +133,18 @@
 }
 
 .nav-link.active {
-  color: #FFFFFF;
-  background: var(--accent-primary);
+  color: var(--text-primary);
+  background: rgba(90, 15, 45, 0.18);
+  border: 1px solid rgba(90, 15, 45, 0.4);
   font-weight: 600;
-  box-shadow: 0 0 16px rgba(90, 15, 45, 0.4);
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .nav-link.active {
+  color: var(--accent-primary);
+  background: rgba(90, 15, 45, 0.08);
+  border: 1px solid rgba(90, 15, 45, 0.3);
+  box-shadow: none !important;
 }
 
 .mobile-toggle {
