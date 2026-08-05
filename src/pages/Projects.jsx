@@ -323,7 +323,7 @@ export default function Projects() {
               )}
             </div>
 
-            <h2 className="hero-title" style={{ fontSize: '1.8rem', textAlign: 'left', margin: '1rem 0 0.5rem 0' }}>
+            <h2 className="hero-title" style={{ fontSize: '1.8rem', textAlign: 'left', margin: '1rem 0 0.5rem 0', color: 'var(--accent-primary)' }}>
               {selectedProject.title}
             </h2>
 

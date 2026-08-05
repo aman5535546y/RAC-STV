@@ -919,6 +919,10 @@ html[data-theme="light"] .carousel-active-glider {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 
+.bento-modal-content .hero-title {
+  color: var(--accent-primary) !important;
+}
+
 .bento-modal-close {
   position: absolute;
   top: 1.25rem;
