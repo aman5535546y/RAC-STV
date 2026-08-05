@@ -116,29 +116,6 @@ export default function Navbar() {
                 </NavLink>
               </li>
 
-              {/* ABOUT LINK */}
-              <li>
-                <a 
-                  href="#about" 
-                  className="nav-link"
-                  onClick={(e) => {
-                    closeMenu();
-                    if (window.location.pathname !== '/') {
-                      navigate('/');
-                      setTimeout(() => {
-                        const el = document.getElementById('about');
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      }, 200);
-                    } else {
-                      const el = document.getElementById('about');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  About
-                </a>
-              </li>
-
               {/* PROJECTS LINK */}
               <li>
                 <NavLink 

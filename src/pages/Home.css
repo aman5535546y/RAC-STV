@@ -52,15 +52,15 @@
   transition: filter 0.4s ease, transform 0.6s ease;
 }
 
-/* Adaptive Theme Gradient Mask (No White Fog, Crisp High-Contrast Image with Natural Bottom Merge) */
+/* Adaptive Theme Gradient Mask - Zero Fog, Crisp Image & Legible Text */
 .hero-media-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    var(--bg-dark) 0%,
-    rgba(10, 10, 14, 0.48) 45%,
-    rgba(10, 10, 14, 0.15) 100%
+    rgba(10, 10, 14, 0.65) 0%,
+    rgba(10, 10, 14, 0.25) 50%,
+    rgba(10, 10, 14, 0.05) 100%
   );
   z-index: 1;
   transition: background 0.4s ease;
@@ -69,14 +69,14 @@
 html[data-theme="light"] .hero-media-overlay {
   background: linear-gradient(
     to top,
-    var(--bg-dark) 0%,
-    rgba(14, 14, 18, 0.45) 42%,
-    rgba(14, 14, 18, 0.12) 100%
+    rgba(0, 0, 0, 0.42) 0%,
+    rgba(0, 0, 0, 0.16) 50%,
+    rgba(0, 0, 0, 0.04) 100%
   );
 }
 
 html[data-theme="light"] .hero-media-element {
-  filter: contrast(1.08) brightness(0.96) saturate(1.04);
+  filter: contrast(1.04) brightness(0.98) saturate(1.02);
 }
 
 /* Hero Content - Bottom-Left Positioned */

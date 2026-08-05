@@ -46,9 +46,9 @@
 }
 
 .nav-logo {
-  height: 48px;
-  width: auto;
-  max-height: 48px;
+  height: 40px;
+  width: 40px;
+  max-height: 40px;
   object-fit: contain;
   object-position: center;
   background: transparent;
