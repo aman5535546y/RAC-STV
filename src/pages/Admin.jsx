@@ -1532,6 +1532,10 @@ export default function Admin() {
                               <input type="text" className="form-input" value={p.tag} onChange={(e) => updateBentoProject(p.id, { tag: e.target.value.toUpperCase() })} />
                             </div>
                             <div className="form-group">
+                              <label className="form-label">Event Date</label>
+                              <input type="text" className="form-input" placeholder="e.g. 15/08/2026" value={p.date || ''} onChange={(e) => updateBentoProject(p.id, { date: e.target.value })} />
+                            </div>
+                            <div className="form-group">
                               <label className="form-label">Card Size Class</label>
                               <select className="form-input" value={p.sizeClass || 'bento-medium'} onChange={(e) => updateBentoProject(p.id, { sizeClass: e.target.value })}>
                                 <option value="bento-large">bento-large (Tall 9:16)</option>
@@ -1635,6 +1639,10 @@ export default function Admin() {
                       <div className="form-group">
                         <label className="form-label">Category Tag</label>
                         <input type="text" className="form-input" placeholder="CHARITY" value={newProjTag} onChange={(e) => setNewProjTag(e.target.value)} />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Event Date</label>
+                        <input type="text" className="form-input" placeholder="e.g. 15/08/2026" value={newProjDate} onChange={(e) => setNewProjDate(e.target.value)} />
                       </div>
                       <div className="form-group">
                         <label className="form-label">Grid Size</label>
