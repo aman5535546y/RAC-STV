@@ -9,6 +9,7 @@ import Members from './pages/Members';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import ErrorBoundary from './components/ErrorBoundary';
+import ScrollToTop from './components/ScrollToTop';
 import { MembersProvider } from './context/MembersContext';
 import { SiteContentProvider } from './context/SiteContentContext';
 import './styles/global.css';
@@ -18,6 +19,7 @@ export default function App() {
     <SiteContentProvider>
       <MembersProvider>
         <Router>
+          <ScrollToTop />
           <Navbar />
           <LoginModal />
           <main className="main-content">
