@@ -478,10 +478,10 @@ export default function Home() {
         })()}
       </section>
 
-      {/* 6. ELEGANT ROTARACT STV BRANDING WORDMARK SECTION */}
+      {/* 6. ELEGANT OVERSIZED ROTARACT STV WORDMARK SECTION */}
       <section className="rac-stv-wordmark-section">
         <div className="rac-stv-wordmark-container">
-          <h2 className="rac-stv-wordmark-text">Rotaract STV</h2>
+          <h2 className="rac-stv-wordmark-text">ROTARACT STV</h2>
         </div>
       </section>
     </div>
