@@ -200,11 +200,6 @@ export default function Home() {
                     </div>
 
                     <div className="board-card-back">
-                      <div className="card-back-header">
-                        <span className="board-role">{member.role}</span>
-                        <h4 className="board-name-small">{member.name}</h4>
-                      </div>
-
                       <div className="card-back-content">
                         <div className="vision-box">
                           <span className="vision-label"><i className="ti ti-eye"></i> VISION</span>
@@ -216,17 +211,6 @@ export default function Home() {
                           <p className="message-text">"{member.message || 'Together, we create lasting positive community impact.'}"</p>
                         </div>
                       </div>
-
-                      <button 
-                        type="button" 
-                        className="flip-back-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setFlippedCardId(null);
-                        }}
-                      >
-                        <i className="ti ti-arrow-back-up"></i> Turn Back
-                      </button>
                     </div>
                   </div>
                 </div>
