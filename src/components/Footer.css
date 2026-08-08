@@ -1,9 +1,10 @@
 .footer {
-  background: var(--bg-surface);
-  border: none;
-  border-top: none;
-  border-bottom: none;
-  box-shadow: none;
+  background: var(--bg-dark);
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  outline: none !important;
   padding: 4.5rem 0 2rem;
   margin-top: auto;
   font-size: 0.82rem;
@@ -158,8 +159,8 @@
 }
 
 .footer-bottom {
-  border-top: 1px solid var(--border-subtle);
-  padding-top: 1.25rem;
+  border-top: none !important;
+  padding-top: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
