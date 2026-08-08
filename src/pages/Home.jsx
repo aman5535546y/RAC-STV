@@ -477,6 +477,13 @@ export default function Home() {
           );
         })()}
       </section>
+
+      {/* 6. FULL-WIDTH RAC STV BIG TYPOGRAPHY WORDMARK BRANDING SECTION */}
+      <section className="rac-stv-wordmark-section">
+        <div className="rac-stv-wordmark-container">
+          <h2 className="rac-stv-wordmark-text">RAC STV</h2>
+        </div>
+      </section>
     </div>
   );
 }
