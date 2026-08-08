@@ -146,11 +146,16 @@ const initialMembersSeed = [
   }
 ];
 
+const APP_VERSION = '2026.08.08_v2';
+const VERSION_KEY = 'rotaract_stv_version';
+
 export function MembersProvider({ children }) {
-  // Load members from localStorage or migrate old seed data automatically
+  // Load members from localStorage with automatic cross-browser schema migration
   const [members, setMembers] = useState(() => {
     try {
+      const storedVersion = localStorage.getItem(VERSION_KEY);
       const stored = localStorage.getItem(STORAGE_KEY);
+
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -166,7 +171,9 @@ export function MembersProvider({ children }) {
           });
 
           return merged.map(m => {
-            let uRole = m.userRole;
+            // Re-sync userRole if newly assigned in seed or database
+            const seedMatch = initialMembersSeed.find(s => s.id === m.id || s.email.toLowerCase() === (m.email || '').toLowerCase());
+            let uRole = m.userRole || (seedMatch ? seedMatch.userRole : undefined);
             if (!uRole) {
               const nameLower = (m.name || '').toLowerCase();
               if (nameLower.includes('aman') || nameLower.includes('falgun') || m.role === 'PRESIDENT' || m.role === 'PRESIDENT ELECT') {
