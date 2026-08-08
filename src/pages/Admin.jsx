@@ -13,7 +13,7 @@ const AUTHORIZED_ADMINS = [
 const MASTER_PASSCODE = 'stv2026';
 
 export default function Admin() {
-  const { members, updateMemberPoints, addMember, updateMember, updateMemberRole, updateMemberAttendance, toggleMemberStatus, removeMember, authenticatedAdmin, adminLogin, adminLogout, adminActiveSection, setAdminActiveSection, openLoginModal } = useMembers();
+  const { members, updateMemberPoints, addMember, updateMember, updateMemberRole, assignManagerRole, removeManagerRole, updateMemberAttendance, toggleMemberStatus, removeMember, authenticatedAdmin, adminLogin, adminLogout, adminActiveSection, setAdminActiveSection, openLoginModal } = useMembers();
   const {
     content,
     updateTheme,
@@ -67,6 +67,8 @@ export default function Admin() {
   const [expandedEventIds, setExpandedEventIds] = useState({});
   const [adminMemberError, setAdminMemberError] = useState('');
   const [editingMember, setEditingMember] = useState(null);
+  const [openMemberMenuId, setOpenMemberMenuId] = useState(null);
+  const [viewingProfileMember, setViewingProfileMember] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -790,6 +792,260 @@ export default function Admin() {
                         >
                           <i className="ti ti-rotate"></i> Reset Photo-2
                         </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 👥 REGISTERED CLUB MEMBERS & MANAGER ASSIGNMENT SECTION */}
+                {isDashboard && (
+                  <div className="cms-editor-card" style={{ marginTop: '1.5rem' }}>
+                    <div className="card-title-bar" style={{ marginBottom: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                        <i className="ti ti-users" style={{ color: 'var(--accent-primary)', fontSize: '1.4rem' }}></i>
+                        <h3 style={{ margin: 0, fontSize: '1.15rem' }}>REGISTERED CLUB MEMBERS & ROLES</h3>
+                      </div>
+                      <span className="badge-mono" style={{ background: 'var(--accent-soft)', color: 'var(--accent-primary)', borderColor: 'var(--accent-primary)' }}>
+                        ADMIN ROLE MANAGEMENT
+                      </span>
+                    </div>
+
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem', lineHeight: '1.5' }}>
+                      View all registered club members, check their current access roles, and assign or revoke Manager privileges. 
+                      <strong> Maximum 2 active Managers allowed.</strong>
+                    </p>
+
+                    {/* REGISTERED MEMBERS LIST / TABLE */}
+                    <div className="roster-table-wrapper" style={{ marginBottom: '2rem', overflowX: 'auto' }}>
+                      <table className="roster-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                          <tr style={{ background: 'var(--bg-surface-light)', borderBottom: '1px solid var(--border-subtle)', textAlign: 'left', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                            <th style={{ padding: '0.75rem 1rem' }}>MEMBER</th>
+                            <th style={{ padding: '0.75rem 1rem' }}>EMAIL</th>
+                            <th style={{ padding: '0.75rem 1rem' }}>CURRENT ROLE</th>
+                            <th style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>ACTIONS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {members.map(m => {
+                            const uRole = (m.userRole || '').toLowerCase();
+                            const isMemberAdmin = uRole === 'admin';
+                            const isMemberManager = uRole === 'manager';
+                            const activeMgrsCount = members.filter(x => (x.userRole || '').toLowerCase() === 'manager').length;
+                            const isMenuOpen = openMemberMenuId === m.id;
+
+                            return (
+                              <tr key={m.id} style={{ borderBottom: '1px solid var(--border-subtle)', transition: 'background 0.2s ease' }}>
+                                <td style={{ padding: '0.85rem 1rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                    <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: isMemberAdmin ? 'linear-gradient(135deg, #d32b69 0%, #b82358 100%)' : isMemberManager ? 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)' : 'var(--bg-surface-light)', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.9rem', color: '#FFF', flexShrink: 0 }}>
+                                      {m.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                                    </div>
+                                    <div>
+                                      <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.92rem' }}>{m.name}</div>
+                                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{m.role || 'MEMBER'}</div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td style={{ padding: '0.85rem 1rem', fontSize: '0.85rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+                                  {m.email}
+                                </td>
+
+                                <td style={{ padding: '0.85rem 1rem' }}>
+                                  {isMemberAdmin ? (
+                                    <span className="badge-mono" style={{ background: 'rgba(211, 43, 105, 0.2)', color: '#FF4D8D', borderColor: 'rgba(211, 43, 105, 0.4)', padding: '0.2rem 0.6rem', fontSize: '0.78rem' }}>
+                                      👑 Admin
+                                    </span>
+                                  ) : isMemberManager ? (
+                                    <span className="badge-mono" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60A5FA', borderColor: 'rgba(59, 130, 246, 0.4)', padding: '0.2rem 0.6rem', fontSize: '0.78rem' }}>
+                                      🛠 Manager
+                                    </span>
+                                  ) : (
+                                    <span className="badge-mono" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10B981', borderColor: 'rgba(16, 185, 129, 0.3)', padding: '0.2rem 0.6rem', fontSize: '0.78rem' }}>
+                                      👤 Member
+                                    </span>
+                                  )}
+                                </td>
+
+                                <td style={{ padding: '0.85rem 1rem', textAlign: 'right', position: 'relative' }}>
+                                  <button
+                                    type="button"
+                                    className="btn btn-outline"
+                                    style={{ padding: '0.3rem 0.6rem', fontSize: '1rem', borderRadius: '6px' }}
+                                    onClick={() => setOpenMemberMenuId(isMenuOpen ? null : m.id)}
+                                  >
+                                    ⋮
+                                  </button>
+
+                                  {/* THREE-DOT ⋮ ACTION MENU */}
+                                  {isMenuOpen && (
+                                    <div 
+                                      style={{
+                                        position: 'absolute',
+                                        right: '1rem',
+                                        top: '2.5rem',
+                                        background: 'var(--bg-surface)',
+                                        border: '1px solid var(--border-subtle)',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                                        zIndex: 100,
+                                        minWidth: '160px',
+                                        overflow: 'hidden',
+                                        textAlign: 'left'
+                                      }}
+                                    >
+                                      {/* MAKE MANAGER BUTTON */}
+                                      {!isMemberAdmin && !isMemberManager && (
+                                        <button
+                                          type="button"
+                                          className="dropdown-item"
+                                          style={{ width: '100%', padding: '0.6rem 1rem', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: activeMgrsCount >= 2 ? 0.5 : 1, cursor: activeMgrsCount >= 2 ? 'not-allowed' : 'pointer' }}
+                                          onClick={() => {
+                                            if (activeMgrsCount >= 2) {
+                                              alert('Maximum limit of 2 Managers reached. Please remove an existing Manager before assigning a new one.');
+                                            } else {
+                                              assignManagerRole(m.id);
+                                              setOpenMemberMenuId(null);
+                                            }
+                                          }}
+                                          title={activeMgrsCount >= 2 ? 'Max 2 Managers already assigned' : 'Make this member a Manager'}
+                                        >
+                                          🛠 Make Manager
+                                        </button>
+                                      )}
+
+                                      {/* REMOVE MANAGER BUTTON */}
+                                      {isMemberManager && (
+                                        <button
+                                          type="button"
+                                          className="dropdown-item"
+                                          style={{ width: '100%', padding: '0.6rem 1rem', fontSize: '0.82rem', color: '#FF4D4D', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                          onClick={() => {
+                                            if (window.confirm(`Are you sure you want to remove Manager role from ${m.name}?`)) {
+                                              removeManagerRole(m.id);
+                                              setOpenMemberMenuId(null);
+                                            }
+                                          }}
+                                        >
+                                          🚫 Remove Manager
+                                        </button>
+                                      )}
+
+                                      {/* VIEW PROFILE BUTTON */}
+                                      <button
+                                        type="button"
+                                        className="dropdown-item"
+                                        style={{ width: '100%', padding: '0.6rem 1rem', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                        onClick={() => {
+                                          setViewingProfileMember(m);
+                                          setOpenMemberMenuId(null);
+                                        }}
+                                      >
+                                        👤 View Profile
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* MANAGERS (X/2) SUMMARY CARDS SECTION */}
+                    <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '1.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                        <h4 style={{ margin: 0, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <i className="ti ti-user-check" style={{ color: '#60A5FA' }}></i> MANAGERS ({members.filter(m => (m.userRole || '').toLowerCase() === 'manager').length}/2)
+                        </h4>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                          Max 2 active Managers allowed
+                        </span>
+                      </div>
+
+                      {/* 2 MANAGER SLOTS GRID */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                        {[0, 1].map(index => {
+                          const activeMgrs = members.filter(m => (m.userRole || '').toLowerCase() === 'manager');
+                          const mgr = activeMgrs[index];
+
+                          if (mgr) {
+                            return (
+                              <div 
+                                key={mgr.id} 
+                                style={{
+                                  background: 'var(--bg-surface-light)',
+                                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                                  borderRadius: '12px',
+                                  padding: '1.25rem',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'space-between',
+                                  position: 'relative'
+                                }}
+                              >
+                                <div>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                                    <span className="badge-mono" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60A5FA', borderColor: 'rgba(59, 130, 246, 0.4)' }}>
+                                      MANAGER {index + 1}
+                                    </span>
+                                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                      📅 {mgr.managerAssignedDate || '01/06/2026'}
+                                    </span>
+                                  </div>
+
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1rem' }}>
+                                    <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', fontWeight: 'bold', fontSize: '1rem', flexShrink: 0 }}>
+                                      {mgr.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                                    </div>
+                                    <div>
+                                      <h5 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-primary)' }}>{mgr.name}</h5>
+                                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{mgr.email}</div>
+                                      <div style={{ fontSize: '0.72rem', color: 'var(--accent-primary)', fontWeight: 600, marginTop: '2px' }}>{mgr.role}</div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  className="btn btn-outline"
+                                  style={{ width: '100%', padding: '0.5rem', fontSize: '0.8rem', color: '#FF4D4D', borderColor: 'rgba(255, 77, 77, 0.3)' }}
+                                  onClick={() => {
+                                    if (window.confirm(`Are you sure you want to remove Manager role from ${mgr.name}?`)) {
+                                      removeManagerRole(mgr.id);
+                                    }
+                                  }}
+                                >
+                                  <i className="ti ti-user-x"></i> Remove Manager
+                                </button>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <div 
+                              key={`empty-${index}`} 
+                              style={{
+                                background: 'rgba(255,255,255,0.02)',
+                                border: '2px dashed var(--border-subtle)',
+                                borderRadius: '12px',
+                                padding: '1.5rem 1.25rem',
+                                textAlign: 'center',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                minHeight: '160px'
+                              }}
+                            >
+                              <div style={{ fontSize: '1.8rem', marginBottom: '0.5rem', opacity: 0.5 }}>➕</div>
+                              <h5 style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-muted)' }}>Manager Slot {index + 1} Empty</h5>
+                              <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'var(--text-muted)' }}>Assign a Manager from the Member List above</p>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -2197,6 +2453,38 @@ export default function Admin() {
               <span>Resolution: <strong>{previewMediaModal.resolution || (previewMediaModal.type === 'video' ? '1080p Full HD' : '2K Resolution')}</strong></span>
               <span>File Size: <strong>{previewMediaModal.size || 'Optimized'}</strong></span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* VIEW MEMBER PROFILE MODAL */}
+      {viewingProfileMember && (
+        <div className="bento-modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(16px)', zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem' }} onClick={() => setViewingProfileMember(null)}>
+          <div className="bento-modal-content" style={{ maxWidth: '500px', width: '100%', background: 'var(--bg-surface)', borderRadius: '16px', border: '1px solid var(--border-subtle)', padding: '2rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85)', position: 'relative' }} onClick={(e) => e.stopPropagation()}>
+            <button className="bento-modal-close" onClick={() => setViewingProfileMember(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.2rem', cursor: 'pointer' }}>
+              <i className="ti ti-x"></i>
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, #d32b69 0%, #b82358 100%)', color: '#FFF', fontWeight: 'bold', fontSize: '1.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
+                {viewingProfileMember.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+              </div>
+              <h3 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text-primary)' }}>{viewingProfileMember.name}</h3>
+              <p style={{ margin: '0.25rem 0 0', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{viewingProfileMember.role || 'CLUB MEMBER'}</p>
+            </div>
+
+            <div style={{ background: 'var(--bg-surface-light)', borderRadius: '10px', padding: '1.25rem', marginBottom: '1.25rem', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', fontSize: '0.85rem' }}>
+                <div><span style={{ color: 'var(--text-muted)' }}>Reg No:</span> <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>{viewingProfileMember.regNo || 'N/A'}</div></div>
+                <div><span style={{ color: 'var(--text-muted)' }}>System Role:</span> <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>{(viewingProfileMember.userRole || 'member').toUpperCase()}</div></div>
+                <div style={{ gridColumn: 'span 2' }}><span style={{ color: 'var(--text-muted)' }}>Email Address:</span> <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>{viewingProfileMember.email}</div></div>
+                <div style={{ gridColumn: 'span 2' }}><span style={{ color: 'var(--text-muted)' }}>Total Reward Points:</span> <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-primary)', fontSize: '1.1rem' }}>{viewingProfileMember.points || 0} PTS</div></div>
+              </div>
+            </div>
+
+            <button className="btn btn-outline" style={{ width: '100%', padding: '0.65rem' }} onClick={() => setViewingProfileMember(null)}>
+              Close Member Profile
+            </button>
           </div>
         </div>
       )}

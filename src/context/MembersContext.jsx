@@ -497,6 +497,60 @@ export function MembersProvider({ children }) {
     }
   };
 
+  const assignManagerRole = (memberId) => {
+    const currentManagers = members.filter(m => (m.userRole || '').toLowerCase() === 'manager');
+    if (currentManagers.length >= 2) {
+      return {
+        success: false,
+        error: 'Maximum limit of 2 Managers reached. Please remove an existing Manager before assigning a new one.'
+      };
+    }
+
+    const todayStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    setMembers(prev => prev.map(m => {
+      if (m.id === memberId) {
+        const updated = {
+          ...m,
+          userRole: 'manager',
+          managerAssignedDate: m.managerAssignedDate || todayStr
+        };
+        if (loggedInMember && loggedInMember.id === memberId) {
+          setLoggedInMember(updated);
+          try { localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(updated)); } catch {}
+        }
+        return updated;
+      }
+      return m;
+    }));
+
+    return { success: true };
+  };
+
+  const removeManagerRole = (memberId) => {
+    setMembers(prev => prev.map(m => {
+      if (m.id === memberId) {
+        const updated = {
+          ...m,
+          userRole: 'member',
+          managerAssignedDate: null
+        };
+        if (loggedInMember && loggedInMember.id === memberId) {
+          setLoggedInMember(updated);
+          try { localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(updated)); } catch {}
+        }
+        if (authenticatedAdmin && authenticatedAdmin.id === memberId && authenticatedAdmin.userRole === 'manager') {
+          setAuthenticatedAdmin(null);
+          try { localStorage.removeItem('rotaract_stv_auth_admin'); } catch {}
+        }
+        return updated;
+      }
+      return m;
+    }));
+
+    return { success: true };
+  };
+
   const updateMemberRole = (memberId, newRoleTitle, newUserRole) => {
     setMembers(prev => prev.map(m => {
       if (m.id === memberId) {
@@ -535,6 +589,8 @@ export function MembersProvider({ children }) {
       addMember,
       updateMember,
       updateMemberRole,
+      assignManagerRole,
+      removeManagerRole,
       updateMemberAttendance,
       toggleMemberStatus,
       updateMemberPoints,

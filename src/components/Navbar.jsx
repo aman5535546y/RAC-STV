@@ -176,60 +176,71 @@ export default function Navbar() {
 
               {/* THIRD ITEM: LOGIN / MEMBER PROFILE DROPDOWN / ADMIN PROFILE DROPDOWN */}
               {loggedInMember ? (
-                /* MEMBER LOGGED IN DROPDOWN: 👤 Aman ▼ */
-                <li className="nav-profile-dropdown" style={{ position: 'relative' }}>
-                  <button
-                    type="button"
-                    className="nav-profile-btn"
-                    onClick={() => setShowDropdown(!showDropdown)}
-                  >
-                    👤 {getFirstName(loggedInMember.name)} <i className="ti ti-chevron-down" style={{ fontSize: '0.85rem' }}></i>
-                  </button>
+                /* MEMBER / MANAGER / ADMIN LOGGED IN DROPDOWN */
+                (() => {
+                  const mRole = (loggedInMember.userRole || '').toLowerCase();
+                  const roleBadge = mRole === 'admin' ? '👑 Admin' : mRole === 'manager' ? '🛠 Manager' : '👤 Member';
+                  const roleTag = mRole === 'admin' ? '👑 ADMIN' : mRole === 'manager' ? '🛠 MANAGER' : '👤 MEMBER';
 
-                  {showDropdown && (
-                    <div className="profile-dropdown-menu" onClick={(e) => e.stopPropagation()}>
-                      <div style={{ padding: '0.75rem 1.25rem', borderBottom: '1px solid var(--border-subtle)' }}>
-                        <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.9rem' }}>
-                          {loggedInMember.name}
+                  return (
+                    <li className="nav-profile-dropdown" style={{ position: 'relative' }}>
+                      <button
+                        type="button"
+                        className="nav-profile-btn"
+                        onClick={() => setShowDropdown(!showDropdown)}
+                      >
+                        {roleBadge} <i className="ti ti-chevron-down" style={{ fontSize: '0.85rem' }}></i>
+                      </button>
+
+                      {showDropdown && (
+                        <div className="profile-dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                          <div style={{ padding: '0.75rem 1.25rem', borderBottom: '1px solid var(--border-subtle)' }}>
+                            <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.9rem' }}>
+                              {loggedInMember.name}
+                            </div>
+                            <div style={{ fontSize: '0.72rem', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                              <span style={{ padding: '1px 5px', borderRadius: '3px', background: mRole === 'admin' ? 'rgba(90, 15, 45, 0.3)' : mRole === 'manager' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(16, 185, 129, 0.2)' }}>
+                                {roleTag}
+                              </span>
+                              <span>• {loggedInMember.role}</span>
+                            </div>
+                          </div>
+
+                          <button 
+                            className="dropdown-item" 
+                            onClick={() => { setShowDropdown(false); closeMenu(); navigate('/members'); }}
+                          >
+                            <i className="ti ti-user" style={{ color: 'var(--accent-primary)' }}></i> My Profile
+                          </button>
+
+                          <button 
+                            className="dropdown-item" 
+                            onClick={handleGoToDashboard}
+                          >
+                            <i className="ti ti-dashboard" style={{ color: 'var(--accent-primary)' }}></i> My Dashboard
+                          </button>
+
+                          <button 
+                            className="dropdown-item" 
+                            onClick={() => { setShowDropdown(false); closeMenu(); setShowAttendanceModal(true); }}
+                          >
+                            <i className="ti ti-calendar-check" style={{ color: 'var(--accent-primary)' }}></i> My Attendance
+                          </button>
+
+                          <div className="dropdown-divider"></div>
+
+                          <button 
+                            className="dropdown-item" 
+                            onClick={handleMemberLogout}
+                            style={{ color: '#FF4D4D' }}
+                          >
+                            <i className="ti ti-logout"></i> Logout
+                          </button>
                         </div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)' }}>
-                          {loggedInMember.role} • {loggedInMember.points} PTS
-                        </div>
-                      </div>
-
-                      <button 
-                        className="dropdown-item" 
-                        onClick={() => { setShowDropdown(false); closeMenu(); navigate('/members'); }}
-                      >
-                        <i className="ti ti-user" style={{ color: 'var(--accent-primary)' }}></i> My Profile
-                      </button>
-
-                      <button 
-                        className="dropdown-item" 
-                        onClick={handleGoToDashboard}
-                      >
-                        <i className="ti ti-dashboard" style={{ color: 'var(--accent-primary)' }}></i> My Dashboard
-                      </button>
-
-                      <button 
-                        className="dropdown-item" 
-                        onClick={() => { setShowDropdown(false); closeMenu(); setShowAttendanceModal(true); }}
-                      >
-                        <i className="ti ti-calendar-check" style={{ color: 'var(--accent-primary)' }}></i> My Attendance
-                      </button>
-
-                      <div className="dropdown-divider"></div>
-
-                      <button 
-                        className="dropdown-item" 
-                        onClick={handleMemberLogout}
-                        style={{ color: '#FF4D4D' }}
-                      >
-                        <i className="ti ti-logout"></i> Logout
-                      </button>
-                    </div>
-                  )}
-                </li>
+                      )}
+                    </li>
+                  );
+                })()
               ) : authenticatedAdmin ? (
                 /* ADMIN / MANAGER LOGGED IN DROPDOWN */
                 (() => {
@@ -244,7 +255,7 @@ export default function Navbar() {
                         style={{ borderColor: isMgr ? '#3B82F6' : 'var(--accent-primary)', color: isMgr ? '#60A5FA' : 'var(--accent-primary)' }}
                         onClick={() => setShowDropdown(!showDropdown)}
                       >
-                        {isMgr ? '💼 Manager ▼' : '👑 Admin ▼'}
+                        {isMgr ? '🛠 Manager ▼' : '👑 Admin ▼'}
                       </button>
 
                       {showDropdown && (
@@ -255,7 +266,7 @@ export default function Navbar() {
                             </div>
                             <div style={{ fontSize: '0.72rem', color: isMgr ? '#60A5FA' : 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                               <span style={{ padding: '1px 5px', borderRadius: '3px', background: isMgr ? 'rgba(59, 130, 246, 0.2)' : 'rgba(90, 15, 45, 0.3)' }}>
-                                {isMgr ? 'MANAGER' : 'ADMIN'}
+                                {isMgr ? '🛠 MANAGER' : '👑 ADMIN'}
                               </span>
                               <span>• {authenticatedAdmin?.role}</span>
                             </div>
