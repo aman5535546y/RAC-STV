@@ -145,7 +145,7 @@ export default function Navbar() {
                   onClick={closeMenu}
                   end
                 >
-                  Home
+                  HOME
                 </NavLink>
               </li>
 
@@ -156,11 +156,22 @@ export default function Navbar() {
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                   onClick={closeMenu}
                 >
-                  Projects
+                  PROJECTS
                 </NavLink>
               </li>
 
-              {/* THEME TOGGLE (PLACED IMMEDIATELY BEFORE LOGIN/PROFILE) */}
+              {/* MEMBER PORTAL LINK */}
+              <li>
+                <NavLink 
+                  to="/members" 
+                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                  onClick={closeMenu}
+                >
+                  MEMBER PORTAL
+                </NavLink>
+              </li>
+
+              {/* THEME TOGGLE (CLEAN TEXT MODE) */}
               <li>
                 <button 
                   type="button"
@@ -170,17 +181,16 @@ export default function Navbar() {
                   title={isLight ? "Switch to Dark Theme" : "Switch to Light Theme"}
                 >
                   <i className={`ti ${isLight ? 'ti-moon-stars' : 'ti-sun'}`}></i>
-                  <span className="theme-toggle-label">{isLight ? 'Dark' : 'Light'}</span>
+                  <span className="theme-toggle-label">{isLight ? 'DARK' : 'LIGHT'}</span>
                 </button>
               </li>
 
-              {/* THIRD ITEM: LOGIN / MEMBER PROFILE DROPDOWN / ADMIN PROFILE DROPDOWN */}
+              {/* AUTH / DASHBOARD DROPDOWN */}
               {loggedInMember ? (
                 /* MEMBER / MANAGER / ADMIN LOGGED IN DROPDOWN */
                 (() => {
                   const mRole = (loggedInMember.userRole || '').toLowerCase();
-                  const roleBadge = mRole === 'admin' ? '👑 Admin' : mRole === 'manager' ? '🛠 Manager' : '👤 Member';
-                  const roleTag = mRole === 'admin' ? '👑 ADMIN' : mRole === 'manager' ? '🛠 MANAGER' : '👤 MEMBER';
+                  const roleTag = mRole === 'admin' ? 'ADMIN' : mRole === 'manager' ? 'MANAGER' : 'MEMBER';
 
                   return (
                     <li className="nav-profile-dropdown" style={{ position: 'relative' }}>
@@ -189,7 +199,7 @@ export default function Navbar() {
                         className="nav-profile-btn"
                         onClick={() => setShowDropdown(!showDropdown)}
                       >
-                        {roleBadge} <i className="ti ti-chevron-down" style={{ fontSize: '0.85rem' }}></i>
+                        {roleTag} <i className="ti ti-chevron-down" style={{ fontSize: '0.8rem' }}></i>
                       </button>
 
                       {showDropdown && (
@@ -252,10 +262,9 @@ export default function Navbar() {
                       <button
                         type="button"
                         className="nav-profile-btn"
-                        style={{ borderColor: isMgr ? '#3B82F6' : 'var(--accent-primary)', color: isMgr ? '#60A5FA' : 'var(--accent-primary)' }}
                         onClick={() => setShowDropdown(!showDropdown)}
                       >
-                        {isMgr ? '🛠 Manager ▼' : '👑 Admin ▼'}
+                        {isMgr ? 'MANAGER' : 'ADMIN'} <i className="ti ti-chevron-down" style={{ fontSize: '0.8rem' }}></i>
                       </button>
 
                       {showDropdown && (
@@ -356,9 +365,9 @@ export default function Navbar() {
                       closeMenu();
                       openLoginModal('select');
                     }}
-                    style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+                    style={{ background: 'transparent', border: 'none', cursor: 'none', fontFamily: 'inherit' }}
                   >
-                    Login
+                    LOGIN
                   </button>
                 </li>
               )}
