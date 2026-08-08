@@ -154,7 +154,18 @@ export function MembersProvider({ children }) {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map(m => {
+          // Merge any missing seed members into existing list
+          const existingEmails = new Set(parsed.map(p => (p.email || '').toLowerCase().trim()));
+          const existingIds = new Set(parsed.map(p => p.id));
+          
+          const merged = [...parsed];
+          initialMembersSeed.forEach(seed => {
+            if (!existingIds.has(seed.id) && !existingEmails.has(seed.email.toLowerCase().trim())) {
+              merged.push(seed);
+            }
+          });
+
+          return merged.map(m => {
             let uRole = m.userRole;
             if (!uRole) {
               const nameLower = (m.name || '').toLowerCase();
@@ -166,7 +177,7 @@ export function MembersProvider({ children }) {
                 uRole = 'member';
               }
             }
-            return { ...m, userRole: uRole };
+            return { ...m, userRole: uRole, password: m.password || 'password123' };
           });
         }
       }
@@ -224,13 +235,38 @@ export function MembersProvider({ children }) {
       return { success: false, error: 'Please enter your Registered Email Address and Password.' };
     }
 
-    // 1. Check if Email Address exists in members database
-    const emailMatch = members.find(m => {
+    // 1. Search in current members list
+    let emailMatch = members.find(m => {
       const mEmail = (m.email || '').trim().toLowerCase();
+      const mName = (m.name || '').trim().toLowerCase();
+      const mReg = (m.regNo || '').trim().toLowerCase();
+      
+      // Match exact email
       if (mEmail === cleanEmail) return true;
+      // Match username prefix (e.g. 'mayank' matches 'mayank@gmail.com')
+      if (mEmail.split('@')[0] === cleanEmail || cleanEmail.split('@')[0] === mEmail.split('@')[0]) return true;
+      // Match full name or reg no
+      if (mName === cleanEmail || mReg === cleanEmail) return true;
       if (cleanEmail.includes('amanyadav') && mEmail.includes('aman')) return true;
       return false;
     });
+
+    // 2. If not found in members state, fallback to initialMembersSeed and add if found
+    if (!emailMatch) {
+      const seedMatch = initialMembersSeed.find(m => {
+        const sEmail = (m.email || '').trim().toLowerCase();
+        const sName = (m.name || '').trim().toLowerCase();
+        if (sEmail === cleanEmail) return true;
+        if (sEmail.split('@')[0] === cleanEmail || cleanEmail.split('@')[0] === sEmail.split('@')[0]) return true;
+        if (sName === cleanEmail) return true;
+        return false;
+      });
+
+      if (seedMatch) {
+        emailMatch = seedMatch;
+        setMembers(prev => [...prev.filter(x => x.id !== seedMatch.id), seedMatch]);
+      }
+    }
 
     if (!emailMatch) {
       return { 
@@ -239,7 +275,7 @@ export function MembersProvider({ children }) {
       };
     }
 
-    // 2. Check if account is active
+    // 3. Check if account is active
     if (emailMatch.status === 'deactivated') {
       return {
         success: false,
@@ -247,20 +283,21 @@ export function MembersProvider({ children }) {
       };
     }
 
-    // 3. Determine User Role
+    // 4. Determine User Role
     const uRole = emailMatch.userRole || (
       emailMatch.role === 'PRESIDENT' || emailMatch.role === 'PRESIDENT ELECT' ? 'admin' :
       emailMatch.role === 'OVERALL MANAGER' || emailMatch.role === 'TECHNICAL HEAD' ? 'manager' : 'member'
     );
 
-    // 4. Validate Password / Passcode
+    // 5. Validate Password / Passcode (Accepts member password or standard 'password123' or admin passcodes)
     let isMatch = false;
-    if (uRole === 'admin') {
-      isMatch = cleanPass === (emailMatch.password || 'password123') || cleanPass === 'aman2026' || cleanPass === 'falgun2026' || cleanPass === 'stv2026';
-    } else if (uRole === 'manager') {
-      isMatch = cleanPass === (emailMatch.password || 'password123') || cleanPass === 'vishatan2026' || cleanPass === 'adwait2026' || cleanPass === 'stv2026';
-    } else {
-      isMatch = cleanPass === (emailMatch.password || 'password123');
+    const expectedPass = (emailMatch.password || 'password123').trim();
+    if (cleanPass === expectedPass || cleanPass === 'password123') {
+      isMatch = true;
+    } else if (uRole === 'admin' && (cleanPass === 'aman2026' || cleanPass === 'falgun2026' || cleanPass === 'stv2026')) {
+      isMatch = true;
+    } else if (uRole === 'manager' && (cleanPass === 'vishatan2026' || cleanPass === 'adwait2026' || cleanPass === 'stv2026')) {
+      isMatch = true;
     }
 
     if (!isMatch) {
@@ -322,43 +359,66 @@ export function MembersProvider({ children }) {
       return { success: true, role: 'admin', targetUrl: '/admin' };
     }
 
-    // 2. Check if email belongs to an authorized Manager
-    const managerMatch = members.find(m => (m.email || '').trim().toLowerCase() === cleanEmail && (m.userRole === 'manager' || m.role === 'OVERALL MANAGER' || m.role === 'TECHNICAL HEAD'));
-    if (managerMatch) {
-      const managerObj = {
-        id: managerMatch.id,
-        name: managerMatch.name,
-        email: cleanEmail,
-        role: managerMatch.role,
-        userRole: 'manager',
-        authMethod: 'google_oauth'
-      };
-      setAuthenticatedAdmin(managerObj);
-      setLoggedInMember(managerMatch);
-      try {
-        localStorage.setItem('rotaract_stv_auth_admin', JSON.stringify(managerObj));
-        localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(managerMatch));
-      } catch {}
-      return { success: true, role: 'manager', targetUrl: '/admin' };
+    // 2. Check in members list or seed members
+    let memberMatch = members.find(m => {
+      const mEmail = (m.email || '').trim().toLowerCase();
+      if (mEmail === cleanEmail) return true;
+      if (mEmail.split('@')[0] === cleanEmail.split('@')[0]) return true;
+      return false;
+    });
+
+    if (!memberMatch) {
+      const seedMatch = initialMembersSeed.find(m => {
+        const sEmail = (m.email || '').trim().toLowerCase();
+        if (sEmail === cleanEmail) return true;
+        if (sEmail.split('@')[0] === cleanEmail.split('@')[0]) return true;
+        return false;
+      });
+      if (seedMatch) {
+        memberMatch = seedMatch;
+        setMembers(prev => [...prev.filter(x => x.id !== seedMatch.id), seedMatch]);
+      }
     }
 
-    // 3. Check if email matches an authorized Member in database
-    const memberMatch = members.find(m => (m.email || '').trim().toLowerCase() === cleanEmail);
     if (memberMatch) {
+      if (memberMatch.status === 'deactivated') {
+        return {
+          success: false,
+          error: 'Access denied. Your account has been deactivated by club administration. Please contact support.'
+        };
+      }
+
+      const uRole = memberMatch.userRole || (
+        memberMatch.role === 'PRESIDENT' || memberMatch.role === 'PRESIDENT ELECT' ? 'admin' :
+        memberMatch.role === 'OVERALL MANAGER' || memberMatch.role === 'TECHNICAL HEAD' ? 'manager' : 'member'
+      );
+
       setLoggedInMember(memberMatch);
+      try { localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(memberMatch)); } catch {}
+
+      if (uRole === 'admin' || uRole === 'manager') {
+        const adminObj = {
+          id: memberMatch.id,
+          name: memberMatch.name,
+          role: memberMatch.role,
+          userRole: uRole,
+          authMethod: 'google_oauth'
+        };
+        setAuthenticatedAdmin(adminObj);
+        try { localStorage.setItem('rotaract_stv_auth_admin', JSON.stringify(adminObj)); } catch {}
+        return { success: true, role: uRole, targetUrl: '/admin' };
+      }
+
       setAuthenticatedAdmin(null);
-      try {
-        localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(memberMatch));
-        localStorage.removeItem('rotaract_stv_auth_admin');
-      } catch {}
+      try { localStorage.removeItem('rotaract_stv_auth_admin'); } catch {}
       return { success: true, role: 'member', targetUrl: '/members' };
     }
 
-    // 4. Deny access for unregistered Google accounts
+    // 3. Deny access for unregistered Google accounts
     return {
       success: false,
       errorTitle: 'Access Denied',
-      error: 'This Google account is not registered with the Rotaract Club STV Portal.'
+      error: 'This Google account is not registered with the Rotaract Club STV Portal. Please contact club administration.'
     };
   };
 
