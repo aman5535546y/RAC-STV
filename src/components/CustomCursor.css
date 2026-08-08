@@ -16,11 +16,11 @@
   z-index: 9999999;
   box-sizing: border-box;
   opacity: 0;
-  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.22s ease,
-              background-color 0.22s ease,
-              box-shadow 0.25s ease,
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              box-shadow 0.2s ease,
               opacity 0.2s ease;
   will-change: transform;
 }
@@ -53,10 +53,11 @@
 }
 
 /* ========================================================= */
-/* NAVBAR CURSOR SPOTLIGHT INTERACTION */
-/* 55-60px Filled White Circle Spotlight Behind Navbar Content */
+/* NAVBAR & FOOTER CURSOR SPOTLIGHT INTERACTION */
+/* 55-60px Filled White Circle Spotlight Behind Nav & Footer */
 /* ========================================================= */
-.custom-cursor.cursor-navbar {
+.custom-cursor.cursor-navbar,
+.custom-cursor.cursor-nav-footer {
   width: 58px;
   height: 58px;
   border-radius: 50%;
@@ -64,7 +65,7 @@
   border: none;
   opacity: 0.94;
   box-shadow: 0 0 28px rgba(255, 255, 255, 0.45), 0 0 45px rgba(255, 255, 255, 0.2);
-  z-index: 998; /* Sits directly behind navbar content (which has z-index: 1005) */
+  z-index: 998; /* Sits directly behind navbar & footer content (which has z-index: 1005) */
   transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               background-color 0.2s ease,
@@ -73,8 +74,9 @@
               box-shadow 0.2s ease;
 }
 
-/* Light Mode Navbar Spotlight */
-html[data-theme="light"] .custom-cursor.cursor-navbar {
+/* Light Mode Navbar & Footer Spotlight */
+html[data-theme="light"] .custom-cursor.cursor-navbar,
+html[data-theme="light"] .custom-cursor.cursor-nav-footer {
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 0 35px rgba(255, 255, 255, 0.95);
@@ -112,7 +114,11 @@ html[data-theme="light"] .custom-cursor.cursor-navbar {
   .partner-logo-img,
   .hero-slide-img,
   .bento-img,
-  .board-card-photo {
+  .board-card-photo,
+  .footer-link-btn,
+  .social-icon-btn,
+  .footer-brand,
+  .footer-title {
     cursor: none !important;
   }
 }

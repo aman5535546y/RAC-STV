@@ -4,7 +4,7 @@ import './CustomCursor.css';
 export default function CustomCursor() {
   const cursorRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isNavbar, setIsNavbar] = useState(false);
+  const [isNavOrFooter, setIsNavOrFooter] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -31,13 +31,16 @@ export default function CustomCursor() {
     const onMouseLeave = () => setIsVisible(false);
     const onMouseEnter = () => setIsVisible(true);
 
-    // Check if target is inside navbar or is an interactive clickable element
+    // Check if target is inside navbar/footer or is an interactive clickable element
     const handleMouseOver = (e) => {
       const target = e.target;
       if (!target) return;
 
-      const insideNavbar = !!target.closest('.navbar, .navbar-container, .navbar-brand, .nav-menu, .nav-item, .nav-actions');
-      setIsNavbar(insideNavbar);
+      const insideNavFooter = !!target.closest(
+        '.navbar, .navbar-container, .navbar-brand, .nav-menu, .nav-item, .nav-actions, ' +
+        '.footer, .footer-grid, .footer-brand, .footer-quick-links, .footer-link-btn, .social-icon-btn, .footer-bottom'
+      );
+      setIsNavOrFooter(insideNavFooter);
 
       const interactive = target.closest(
         'a, button, [role="button"], input, select, textarea, label, ' +
@@ -47,6 +50,14 @@ export default function CustomCursor() {
       );
 
       setIsHovered(!!interactive);
+    };
+
+    // Re-evaluate target element when scrolling so cursor state stays 100% active and synchronized
+    const onScroll = () => {
+      if (mouseX >= 0 && mouseY >= 0) {
+        const el = document.elementFromPoint(mouseX, mouseY);
+        if (el) handleMouseOver({ target: el });
+      }
     };
 
     // Smooth animation loop using lerp (linear interpolation) for fluid trailing follow
@@ -63,6 +74,7 @@ export default function CustomCursor() {
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mouseup', onMouseUp);
     document.addEventListener('mouseleave', onMouseLeave);
@@ -73,6 +85,7 @@ export default function CustomCursor() {
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mouseleave', onMouseLeave);
@@ -85,7 +98,7 @@ export default function CustomCursor() {
   return (
     <div
       ref={cursorRef}
-      className={`custom-cursor ${isNavbar ? 'cursor-navbar' : ''} ${isHovered && !isNavbar ? 'cursor-hover' : ''} ${isClicked ? 'cursor-click' : ''} ${isVisible ? 'cursor-visible' : 'cursor-hidden'}`}
+      className={`custom-cursor ${isNavOrFooter ? 'cursor-nav-footer' : ''} ${isHovered && !isNavOrFooter ? 'cursor-hover' : ''} ${isClicked ? 'cursor-click' : ''} ${isVisible ? 'cursor-visible' : 'cursor-hidden'}`}
       aria-hidden="true"
     />
   );
