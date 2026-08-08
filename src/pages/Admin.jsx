@@ -1557,10 +1557,10 @@ export default function Admin() {
                                   <input type="text" className="form-input" value={b.name} onChange={(e) => updateBoardMember(b.id, { name: e.target.value })} />
                                 </div>
                                 <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                                  <label className="form-label">Leader Photo Image (Upload File or Enter URL)</label>
+                                  <label className="form-label">Leader Photo (Upload 4:5 Portrait Image - e.g. 1080×1350px or Enter URL)</label>
                                   <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
                                     <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0, background: '#000' }}>
-                                      <img src={b.photo || '/hero_team_1.jpg'} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                      <img src={b.photo || '/hero_team_1.jpg'} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: b.photoPosition || 'center top' }} />
                                     </div>
 
                                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
@@ -1571,9 +1571,9 @@ export default function Admin() {
                                         value={b.photo || ''} 
                                         onChange={(e) => updateBoardMember(b.id, { photo: e.target.value })} 
                                       />
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
                                         <label className="btn btn-outline" style={{ padding: '0.35rem 0.85rem', fontSize: '0.75rem', cursor: 'pointer', background: 'var(--accent-soft)' }}>
-                                          <i className="ti ti-upload"></i> Upload Photo File
+                                          <i className="ti ti-upload"></i> Upload 4:5 Portrait Photo
                                           <input 
                                             type="file" 
                                             accept="image/*" 
@@ -1581,7 +1581,20 @@ export default function Admin() {
                                             onChange={(e) => handleBoardPhotoFileUpload(b.id, e.target.files[0])} 
                                           />
                                         </label>
-                                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Select image file from computer</span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Focus:</span>
+                                          <select 
+                                            className="form-input" 
+                                            style={{ width: 'auto', padding: '0.2rem 0.5rem', fontSize: '0.75rem' }}
+                                            value={b.photoPosition || 'center top'}
+                                            onChange={(e) => updateBoardMember(b.id, { photoPosition: e.target.value })}
+                                          >
+                                            <option value="center top">Center Top (Face Focus)</option>
+                                            <option value="center center">Center</option>
+                                            <option value="top center">Top</option>
+                                            <option value="bottom center">Bottom</option>
+                                          </select>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -1614,7 +1627,7 @@ export default function Admin() {
                         <input type="text" className="form-input" placeholder="e.g. John Doe" value={newBoardName} onChange={(e) => setNewBoardName(e.target.value)} required />
                       </div>
                       <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                        <label className="form-label">Photo Image (Upload File or Enter URL)</label>
+                        <label className="form-label">Leader Photo (Upload 4:5 Portrait Image - e.g. 1080×1350px or Enter URL)</label>
                         <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
                           {newBoardPhoto && (
                             <div style={{ width: '50px', height: '50px', borderRadius: '8px', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
@@ -1624,7 +1637,7 @@ export default function Admin() {
                           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                             <input type="text" className="form-input" placeholder="e.g. /hero_team_1.jpg or https://..." value={newBoardPhoto} onChange={(e) => setNewBoardPhoto(e.target.value)} />
                             <label className="btn btn-outline" style={{ padding: '0.35rem 0.85rem', fontSize: '0.75rem', cursor: 'pointer', alignSelf: 'flex-start' }}>
-                              <i className="ti ti-upload"></i> Upload Image File
+                              <i className="ti ti-upload"></i> Upload 4:5 Portrait Photo
                               <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleNewBoardPhotoFileUpload(e.target.files[0])} />
                             </label>
                           </div>

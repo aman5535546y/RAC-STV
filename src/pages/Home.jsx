@@ -182,6 +182,10 @@ export default function Home() {
                           src={member.photo || '/hero_team_1.jpg'} 
                           alt={member.name} 
                           className="board-card-photo"
+                          style={{
+                            objectFit: 'cover',
+                            objectPosition: member.photoPosition || 'center top'
+                          }}
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = '/hero_team_1.jpg';
