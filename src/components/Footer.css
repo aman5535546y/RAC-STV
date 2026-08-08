@@ -1,9 +1,10 @@
 .footer {
   background: var(--bg-surface);
   border-top: none;
-  padding: 3.5rem 0 1.5rem;
+  padding: 2rem 0 1.5rem;
   margin-top: auto;
   font-size: 0.82rem;
+  box-shadow: none;
 }
 
 .footer-grid {

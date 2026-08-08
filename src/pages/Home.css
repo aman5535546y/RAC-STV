@@ -1337,8 +1337,8 @@ html[data-theme="dark"] .partner-logo-img,
 .rac-stv-wordmark-section {
   width: 100%;
   max-width: 100vw;
-  background: var(--bg-dark);
-  padding: 5rem 1rem 5.5rem;
+  background: var(--bg-surface);
+  padding: 4.5rem 1rem 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1348,6 +1348,7 @@ html[data-theme="dark"] .partner-logo-img,
   text-align: center;
   border-top: none;
   border-bottom: none;
+  box-shadow: none;
 }
 
 .rac-stv-wordmark-container {
@@ -1386,7 +1387,7 @@ html[data-theme="dark"] .partner-logo-img,
 /* Tablet & Mobile Proportional Scaling */
 @media (max-width: 1280px) {
   .rac-stv-wordmark-section {
-    padding: 4.25rem 1rem 4.75rem;
+    padding: 3.75rem 1rem 0.5rem;
   }
   .rac-stv-wordmark-text {
     font-size: clamp(3.8rem, 11vw, 10rem);
@@ -1396,7 +1397,7 @@ html[data-theme="dark"] .partner-logo-img,
 
 @media (max-width: 768px) {
   .rac-stv-wordmark-section {
-    padding: 3rem 0.75rem 3.5rem;
+    padding: 2.75rem 0.75rem 0.5rem;
   }
   .rac-stv-wordmark-text {
     font-size: clamp(2.5rem, 10.8vw, 6.5rem);
@@ -1406,7 +1407,7 @@ html[data-theme="dark"] .partner-logo-img,
 
 @media (max-width: 480px) {
   .rac-stv-wordmark-section {
-    padding: 2.25rem 0.5rem 2.75rem;
+    padding: 2rem 0.5rem 0.25rem;
   }
   .rac-stv-wordmark-text {
     font-size: clamp(1.75rem, 10.4vw, 3.8rem);
