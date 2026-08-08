@@ -4,6 +4,7 @@ import './CustomCursor.css';
 export default function CustomCursor() {
   const cursorRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isNavbar, setIsNavbar] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -30,10 +31,13 @@ export default function CustomCursor() {
     const onMouseLeave = () => setIsVisible(false);
     const onMouseEnter = () => setIsVisible(true);
 
-    // Check if target is an interactive clickable element
+    // Check if target is inside navbar or is an interactive clickable element
     const handleMouseOver = (e) => {
       const target = e.target;
       if (!target) return;
+
+      const insideNavbar = !!target.closest('.navbar, .navbar-container, .navbar-brand, .nav-menu, .nav-item, .nav-actions');
+      setIsNavbar(insideNavbar);
 
       const interactive = target.closest(
         'a, button, [role="button"], input, select, textarea, label, ' +
@@ -45,9 +49,8 @@ export default function CustomCursor() {
       setIsHovered(!!interactive);
     };
 
-    // Smooth animation loop using lerp (linear interpolation) for subtle fluid trail
+    // Smooth animation loop using lerp (linear interpolation) for fluid trailing follow
     const render = () => {
-      // Lerp factor (0.2 = fluid, responsive trailing follow)
       const ease = 0.22;
       cursorX += (mouseX - cursorX) * ease;
       cursorY += (mouseY - cursorY) * ease;
@@ -82,7 +85,7 @@ export default function CustomCursor() {
   return (
     <div
       ref={cursorRef}
-      className={`custom-cursor ${isHovered ? 'cursor-hover' : ''} ${isClicked ? 'cursor-click' : ''} ${isVisible ? 'cursor-visible' : 'cursor-hidden'}`}
+      className={`custom-cursor ${isNavbar ? 'cursor-navbar' : ''} ${isHovered && !isNavbar ? 'cursor-hover' : ''} ${isClicked ? 'cursor-click' : ''} ${isVisible ? 'cursor-visible' : 'cursor-hidden'}`}
       aria-hidden="true"
     />
   );

@@ -36,6 +36,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  position: relative;
+  z-index: 1005;
 }
 
 .navbar-brand {
@@ -43,6 +45,8 @@
   align-items: center;
   gap: 14px;
   text-decoration: none;
+  position: relative;
+  z-index: 1005;
 }
 
 .nav-logo {

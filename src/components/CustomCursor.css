@@ -16,11 +16,12 @@
   z-index: 9999999;
   box-sizing: border-box;
   opacity: 0;
-  transition: opacity 0.2s ease,
-              width 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s ease,
-              background-color 0.2s ease;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease,
+              background-color 0.22s ease,
+              box-shadow 0.25s ease,
+              opacity 0.2s ease;
   will-change: transform;
 }
 
@@ -33,7 +34,7 @@
   opacity: 0;
 }
 
-/* Hover Interaction: Expands around 1.3x on interactive elements (26px) */
+/* Hover Interaction on Page Elements: Expands around 1.3x (26px) */
 .custom-cursor.cursor-hover {
   width: 26px;
   height: 26px;
@@ -49,6 +50,30 @@
   height: 17px;
   border-color: var(--accent-hover);
   background: var(--accent-soft-hover);
+}
+
+/* ========================================================= */
+/* NAVBAR CURSOR SPOTLIGHT INTERACTION */
+/* 70-80px Filled White Circle Spotlight Behind Navbar Content */
+/* ========================================================= */
+.custom-cursor.cursor-navbar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: none;
+  opacity: 0.95;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.25);
+  z-index: 998; /* Sits directly behind navbar content (which has z-index: 1005) */
+  mix-blend-mode: normal;
+}
+
+/* Light Mode Navbar Spotlight */
+html[data-theme="light"] .custom-cursor.cursor-navbar {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12), 0 0 45px rgba(255, 255, 255, 0.95);
+  opacity: 0.98;
 }
 
 /* Strict Global Elimination of Native Browser Cursors on Desktop */
