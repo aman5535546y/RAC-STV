@@ -160,17 +160,6 @@ export default function Navbar() {
                 </NavLink>
               </li>
 
-              {/* MEMBER PORTAL LINK */}
-              <li>
-                <NavLink 
-                  to="/members" 
-                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                  onClick={closeMenu}
-                >
-                  MEMBER PORTAL
-                </NavLink>
-              </li>
-
               {/* THEME TOGGLE (CLEAN TEXT MODE) */}
               <li>
                 <button 
