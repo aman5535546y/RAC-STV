@@ -10,6 +10,7 @@ import Admin from './pages/Admin';
 import Login from './pages/Login';
 import ErrorBoundary from './components/ErrorBoundary';
 import ScrollToTop from './components/ScrollToTop';
+import CustomCursor from './components/CustomCursor';
 import { MembersProvider } from './context/MembersContext';
 import { SiteContentProvider } from './context/SiteContentContext';
 import './styles/global.css';
@@ -19,6 +20,7 @@ export default function App() {
     <SiteContentProvider>
       <MembersProvider>
         <Router>
+          <CustomCursor />
           <ScrollToTop />
           <Navbar />
           <LoginModal />
