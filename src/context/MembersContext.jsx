@@ -232,10 +232,10 @@ export function MembersProvider({ children }) {
     const cleanPass = (password || '').trim();
 
     if (!cleanEmail || !cleanPass) {
-      return { success: false, error: 'Please enter your Registered Email Address and Password.' };
+      return { success: false, error: 'Please enter your registered email address and password.' };
     }
 
-    // 1. Search in current members list
+    // Step 1: Search in registered members database
     let emailMatch = members.find(m => {
       const mEmail = (m.email || '').trim().toLowerCase();
       const mName = (m.name || '').trim().toLowerCase();
@@ -251,14 +251,15 @@ export function MembersProvider({ children }) {
       return false;
     });
 
-    // 2. If not found in members state, fallback to initialMembersSeed and add if found
+    // Step 2: Fallback check against initialMembersSeed to ensure seed members are always available
     if (!emailMatch) {
       const seedMatch = initialMembersSeed.find(m => {
         const sEmail = (m.email || '').trim().toLowerCase();
         const sName = (m.name || '').trim().toLowerCase();
+        const sReg = (m.regNo || '').trim().toLowerCase();
         if (sEmail === cleanEmail) return true;
         if (sEmail.split('@')[0] === cleanEmail || cleanEmail.split('@')[0] === sEmail.split('@')[0]) return true;
-        if (sName === cleanEmail) return true;
+        if (sName === cleanEmail || sReg === cleanEmail) return true;
         return false;
       });
 
@@ -268,28 +269,29 @@ export function MembersProvider({ children }) {
       }
     }
 
+    // Step 3: Member Validation - Check if account is registered
     if (!emailMatch) {
       return { 
         success: false, 
-        error: 'Access denied. Your email address is not authorized for the RAC STV Portal. Please contact club administration.' 
+        error: 'Your account is not registered with the RAC STV Portal.' 
       };
     }
 
-    // 3. Check if account is active
-    if (emailMatch.status === 'deactivated') {
+    // Step 4: Check if account is active or disabled/deactivated
+    if (emailMatch.status === 'deactivated' || emailMatch.status === 'disabled') {
       return {
         success: false,
-        error: 'Access denied. Your account has been deactivated by club administration. Please contact support.'
+        error: 'Your account has been disabled. Please contact club administration.'
       };
     }
 
-    // 4. Determine User Role
+    // Step 5: Determine User Role
     const uRole = emailMatch.userRole || (
       emailMatch.role === 'PRESIDENT' || emailMatch.role === 'PRESIDENT ELECT' ? 'admin' :
       emailMatch.role === 'OVERALL MANAGER' || emailMatch.role === 'TECHNICAL HEAD' ? 'manager' : 'member'
     );
 
-    // 5. Validate Password / Passcode (Accepts member password or standard 'password123' or admin passcodes)
+    // Step 6: Validate Password / Passcode
     let isMatch = false;
     const expectedPass = (emailMatch.password || 'password123').trim();
     if (cleanPass === expectedPass || cleanPass === 'password123') {
@@ -303,7 +305,7 @@ export function MembersProvider({ children }) {
     if (!isMatch) {
       return {
         success: false,
-        error: 'Invalid password. Please check your credentials.'
+        error: 'Incorrect email or password.'
       };
     }
 
@@ -315,6 +317,7 @@ export function MembersProvider({ children }) {
       const adminObj = {
         id: emailMatch.id,
         name: emailMatch.name,
+        email: emailMatch.email,
         role: emailMatch.role,
         userRole: uRole,
         passcode: cleanPass
@@ -333,6 +336,14 @@ export function MembersProvider({ children }) {
   const loginWithGoogle = (googleEmail) => {
     const cleanEmail = (googleEmail || '').trim().toLowerCase();
     const OFFICIAL_ADMIN_EMAIL = 'rotaractclubofstv@gmail.com';
+
+    if (!cleanEmail) {
+      return {
+        success: false,
+        errorTitle: 'Account Not Registered',
+        error: 'Your account is not registered with the RAC STV Portal.'
+      };
+    }
 
     // 1. Check if email matches Official Admin Google Account rotaractclubofstv@gmail.com or designated Admin credentials
     if (cleanEmail === OFFICIAL_ADMIN_EMAIL || cleanEmail === 'amanyadav407500@gmail.com' || cleanEmail === 'aman.yadav@gmail.com' || cleanEmail === 'falgun.bodele@gmail.com') {
@@ -380,46 +391,49 @@ export function MembersProvider({ children }) {
       }
     }
 
-    if (memberMatch) {
-      if (memberMatch.status === 'deactivated') {
-        return {
-          success: false,
-          error: 'Access denied. Your account has been deactivated by club administration. Please contact support.'
-        };
-      }
-
-      const uRole = memberMatch.userRole || (
-        memberMatch.role === 'PRESIDENT' || memberMatch.role === 'PRESIDENT ELECT' ? 'admin' :
-        memberMatch.role === 'OVERALL MANAGER' || memberMatch.role === 'TECHNICAL HEAD' ? 'manager' : 'member'
-      );
-
-      setLoggedInMember(memberMatch);
-      try { localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(memberMatch)); } catch {}
-
-      if (uRole === 'admin' || uRole === 'manager') {
-        const adminObj = {
-          id: memberMatch.id,
-          name: memberMatch.name,
-          role: memberMatch.role,
-          userRole: uRole,
-          authMethod: 'google_oauth'
-        };
-        setAuthenticatedAdmin(adminObj);
-        try { localStorage.setItem('rotaract_stv_auth_admin', JSON.stringify(adminObj)); } catch {}
-        return { success: true, role: uRole, targetUrl: '/admin' };
-      }
-
-      setAuthenticatedAdmin(null);
-      try { localStorage.removeItem('rotaract_stv_auth_admin'); } catch {}
-      return { success: true, role: 'member', targetUrl: '/members' };
+    // 3. Reject if not registered
+    if (!memberMatch) {
+      return {
+        success: false,
+        errorTitle: 'Account Not Registered',
+        error: 'Your account is not registered with the RAC STV Portal.'
+      };
     }
 
-    // 3. Deny access for unregistered Google accounts
-    return {
-      success: false,
-      errorTitle: 'Access Denied',
-      error: 'This Google account is not registered with the Rotaract Club STV Portal. Please contact club administration.'
-    };
+    // 4. Reject if account is deactivated or disabled
+    if (memberMatch.status === 'deactivated' || memberMatch.status === 'disabled') {
+      return {
+        success: false,
+        errorTitle: 'Account Disabled',
+        error: 'Your account has been disabled. Please contact club administration.'
+      };
+    }
+
+    // 5. Determine Role & Redirect
+    const uRole = memberMatch.userRole || (
+      memberMatch.role === 'PRESIDENT' || memberMatch.role === 'PRESIDENT ELECT' ? 'admin' :
+      memberMatch.role === 'OVERALL MANAGER' || memberMatch.role === 'TECHNICAL HEAD' ? 'manager' : 'member'
+    );
+
+    setLoggedInMember(memberMatch);
+    try { localStorage.setItem('rotaract_stv_auth_member', JSON.stringify(memberMatch)); } catch {}
+
+    if (uRole === 'admin' || uRole === 'manager') {
+      const adminObj = {
+        id: memberMatch.id,
+        name: memberMatch.name,
+        role: memberMatch.role,
+        userRole: uRole,
+        authMethod: 'google_oauth'
+      };
+      setAuthenticatedAdmin(adminObj);
+      try { localStorage.setItem('rotaract_stv_auth_admin', JSON.stringify(adminObj)); } catch {}
+      return { success: true, role: uRole, targetUrl: '/admin' };
+    }
+
+    setAuthenticatedAdmin(null);
+    try { localStorage.removeItem('rotaract_stv_auth_admin'); } catch {}
+    return { success: true, role: 'member', targetUrl: '/members' };
   };
 
   const logout = () => {

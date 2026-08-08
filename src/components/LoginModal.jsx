@@ -54,9 +54,9 @@ export default function LoginModal() {
         console.log('[Google OAuth] Successfully authenticated email from Google popup:', authRes.email);
         const res = loginWithGoogle(authRes.email);
         if (!res.success) {
-          setLoginErrorTitle(res.errorTitle || 'Access Denied');
-          setLoginError(res.error || 'This Google account is not registered with the Rotaract Club STV Portal.');
-          setLoginErrorCode('ACCESS_DENIED_UNREGISTERED_EMAIL');
+          setLoginErrorTitle(res.errorTitle || '');
+          setLoginError(res.error || 'Your account is not registered with the RAC STV Portal.');
+          setLoginErrorCode('');
         } else {
           setLoginError('');
           setLoginErrorTitle('');
