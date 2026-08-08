@@ -11,11 +11,12 @@
   border-radius: 50%;
   border: 1.5px solid var(--text-primary);
   background: transparent;
-  pointer-events: none;
-  z-index: 999999;
+  pointer-events: none !important;
+  user-select: none !important;
+  z-index: 9999999;
   box-sizing: border-box;
   opacity: 0;
-  transition: opacity 0.25s ease,
+  transition: opacity 0.2s ease,
               width 0.18s cubic-bezier(0.16, 1, 0.3, 1),
               height 0.18s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.2s ease,
@@ -50,20 +51,64 @@
   background: var(--accent-soft-hover);
 }
 
-/* Ensure default desktop mouse pointer is hidden on fine pointer devices */
+/* Strict Global Elimination of Native Browser Cursors on Desktop */
 @media (hover: hover) and (pointer: fine) {
-  html, body, a, button, input, select, textarea, [role="button"], label, .btn, .nav-link {
+  *,
+  *::before,
+  *::after,
+  html,
+  body,
+  a,
+  button,
+  img,
+  svg,
+  path,
+  video,
+  iframe,
+  canvas,
+  input,
+  select,
+  textarea,
+  label,
+  [role="button"],
+  .btn,
+  .nav-link,
+  .bento-card,
+  .board-card-container,
+  .cms-item-card,
+  .leaderboard-card,
+  .tab-btn,
+  .partner-logo-item,
+  .partner-logo-img,
+  .hero-slide-img,
+  .bento-img,
+  .board-card-photo {
     cursor: none !important;
   }
 }
 
-/* Hide custom cursor on mobile and touch devices, restore natural native touch cursor */
+/* Natural Touch Cursors for Mobile & Touch Devices */
 @media (hover: none) and (pointer: coarse), (max-width: 768px) {
   .custom-cursor {
     display: none !important;
     visibility: hidden !important;
+    opacity: 0 !important;
   }
-  html, body, a, button, input, select, textarea, [role="button"], label, .btn, .nav-link {
+  *,
+  *::before,
+  *::after,
+  html,
+  body,
+  a,
+  button,
+  img,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  label,
+  .btn,
+  .nav-link {
     cursor: auto !important;
   }
 }

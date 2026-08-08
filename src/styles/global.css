@@ -7,6 +7,13 @@
   padding: 0;
 }
 
+/* Universal Custom Cursor Rule: eliminate default system mouse pointer on desktop */
+@media (hover: hover) and (pointer: fine) {
+  *, *::before, *::after, html, body, a, button, img, svg, input, select, textarea, [role="button"], label, .btn, .nav-link {
+    cursor: none !important;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
