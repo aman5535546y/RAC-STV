@@ -54,26 +54,31 @@
 
 /* ========================================================= */
 /* NAVBAR CURSOR SPOTLIGHT INTERACTION */
-/* 70-80px Filled White Circle Spotlight Behind Navbar Content */
+/* 55-60px Filled White Circle Spotlight Behind Navbar Content */
 /* ========================================================= */
 .custom-cursor.cursor-navbar {
-  width: 76px;
-  height: 76px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: #FFFFFF;
   border: none;
-  opacity: 0.95;
-  box-shadow: 0 0 35px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.25);
+  opacity: 0.94;
+  box-shadow: 0 0 28px rgba(255, 255, 255, 0.45), 0 0 45px rgba(255, 255, 255, 0.2);
   z-index: 998; /* Sits directly behind navbar content (which has z-index: 1005) */
-  mix-blend-mode: normal;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              opacity 0.2s ease,
+              box-shadow 0.2s ease;
 }
 
 /* Light Mode Navbar Spotlight */
 html[data-theme="light"] .custom-cursor.cursor-navbar {
   background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12), 0 0 45px rgba(255, 255, 255, 0.95);
-  opacity: 0.98;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 0 35px rgba(255, 255, 255, 0.95);
+  opacity: 0.96;
 }
 
 /* Strict Global Elimination of Native Browser Cursors on Desktop */
